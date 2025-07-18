@@ -1,6 +1,8 @@
-﻿namespace GeradorDeTestes.Dominio.ModuloQuestoes
+﻿using GeradorDeTestes.Dominio.Compartilhado;
+
+namespace GeradorDeTestes.Dominio.ModuloQuestoes
 {
-    public interface IRepositorioQuestao
+    public interface IRepositorioQuestao : IRepositorioBase<Questao>
     {
 
     }
