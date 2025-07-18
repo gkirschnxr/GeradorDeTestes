@@ -2,3 +2,4 @@
 
 namespace GeradorDeTestes.Dominio.Disciplina;
 public interface IRepositorioDisciplina : IRepositorioBase<Disciplina>;
+    

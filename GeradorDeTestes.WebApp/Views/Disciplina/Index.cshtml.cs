@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace GeradorDeTestes.WebApp.Views.Disciplina
 {
-    public class CadastrarModel : PageModel
+    public class IndexModel : PageModel
     {
         public void OnGet()
         {

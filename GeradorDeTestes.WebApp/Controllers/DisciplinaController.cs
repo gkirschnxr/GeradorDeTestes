@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GeradorDeTestes.Dominio.Disciplina;
+using GeradorDeTestes.WebApp.Extensions;
+using GeradorDeTestes.WebApp.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GeradorDeTestes.WebApp.Controllers
 {
-    [Route("disciplina")]
+    [Route("disciplinas")]
     public class DisciplinaController : Controller
     {
         private readonly ContextoDados contexto;
@@ -121,8 +124,8 @@ namespace GeradorDeTestes.WebApp.Controllers
 
             var detalhesVM = new DetalhesDisciplinaViewModel(
                 id,
-                registroSelecionado.Nome,
-                registroSelecionado.Despesas
+                registroSelecionado.Nome
+                //registroSelecionado.Materia
             );
 
             return View(detalhesVM);

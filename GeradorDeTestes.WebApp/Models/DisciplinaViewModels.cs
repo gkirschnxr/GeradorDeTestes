@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using GeradorDeTestes.Dominio.Disciplina;
+using GeradorDeTestes.WebApp.Extensions;
+using System.ComponentModel.DataAnnotations;
 
 namespace GeradorDeTestes.WebApp.Models
 {
@@ -62,27 +64,27 @@ namespace GeradorDeTestes.WebApp.Models
     {
         public Guid Id { get; set; }
         public string Nome { get; set; }
-        public List<DetalhesMateriasViewModel> Materia { get; set; }
+        //public List<DetalhesMateriasViewModel> Materia { get; set; }
         public decimal TotalDespesas { get; set; }
 
-        public DetalhesDisciplinaViewModel(Guid id, string nome, List<Materias> materias)
+        public DetalhesDisciplinaViewModel(Guid id, string nome)//, List<Materia> materias)
         {
             Id = id;
             Nome = nome;
 
-            Materias = new List<DetalhesMateriasViewModel>();
+          //  Materias = new List<DetalhesMateriasViewModel>();
 
-            foreach (var d in materias)
-            {
-                TotalDespesas += d.Valor;
+          //  foreach (var d in materias)
+          //  {
+          //      TotalDespesas += d.materias;
 
-                var detalhesDespesaVM = new DetalhesMateriasViewModel(
-                    d.Id,
-                    d.Materias
-                );
+        //        var detalhesDespesaVM = new DetalhesMateriasViewModel(
+        //            d.Id,
+        //            d.Materias
+       //         );
 
-                Materias.Add(detalhesDespesaVM);
-            }
+      //          Materias.Add(detalhesDespesaVM);
+       //     }
         }
     }
 }

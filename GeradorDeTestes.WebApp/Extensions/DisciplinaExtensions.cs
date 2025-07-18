@@ -1,20 +1,21 @@
-﻿namespace GeradorDeTestes.WebApp.Extensions
-{
-    public static class DisciplinaExtensions;
+﻿using GeradorDeTestes.Dominio.Disciplina;
+using GeradorDeTestes.WebApp.Models;
 
+namespace GeradorDeTestes.WebApp.Extensions
+{
     public static class DisciplinaExtensions
     {
         public static Disciplina ParaEntidade(this FormularioDisciplinaViewModel formularioVM)
         {
-            return new Disciplina(formularioVM.Titulo);
+            return new Disciplina(formularioVM.Nome);
         }
 
-        public static DetalhesDisciplinaViewModel ParaDetalhesVM(this Disciplina categoria)
+        public static DetalhesDisciplinaViewModel ParaDetalhesVM(this Disciplina disciplina)
         {
             return new DetalhesDisciplinaViewModel(
-                    categoria.Id,
-                    categoria.Nome,
-                    categoria.Materia
+                    disciplina.Id,
+                    disciplina.Nome
+                    //disciplina.Materia
             );
         }
     }

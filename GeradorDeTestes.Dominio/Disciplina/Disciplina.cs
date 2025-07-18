@@ -4,11 +4,11 @@ namespace GeradorDeTestes.Dominio.Disciplina
     public class Disciplina : EntidadeBase<Disciplina>
     {
         public string Nome { get; set; }
-        public List<Despesa> Despesas { get; set; }
+        // public List<Materia> Materia { get; set; }
 
         public Disciplina()
         {
-            Despesas = new List<Despesa>();
+        //    Materia = new List<Materia>();
         }
 
         public Disciplina(string nome) : this()
