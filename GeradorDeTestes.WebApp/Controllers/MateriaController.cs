@@ -56,4 +56,21 @@ public class MateriaController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
+    [HttpGet("excluir/{id:guid}")]
+    public IActionResult Excluir(Guid id) {
+        var registro = _repositorioMateria.SelecionarRegistroPorId(id);
+
+        var excluirVM = new ExcluirMateriaViewModel(registro!.Id, registro.Nome);
+
+        return View(excluirVM);
+    }
+
+    [HttpPost("excluir/{id:guid}")]
+    [ValidateAntiForgeryToken]
+    public IActionResult ExcluirRegistro(Guid id) {
+        _repositorioMateria.ExcluirRegistro(id);     
+
+        return RedirectToAction(nameof(Index));
+    }
 }

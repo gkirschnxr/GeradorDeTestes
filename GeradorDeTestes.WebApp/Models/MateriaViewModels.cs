@@ -3,7 +3,8 @@ using GeradorDeTestes.WebApp.Extensions;
 
 namespace GeradorDeTestes.WebApp.Models;
 
-public class FormularioMateriaViewModel {
+public class FormularioMateriaViewModel 
+{
     public string Nome { get; set; } = string.Empty;
     public TipoDisciplina Disciplina { get; set; }
     public TipoSerie Serie { get; set; }
@@ -19,7 +20,8 @@ public class CadastrarMateriaViewModel : FormularioMateriaViewModel
     }
 }
 
-public class EditarMateriaViewModel : FormularioMateriaViewModel {
+public class EditarMateriaViewModel : FormularioMateriaViewModel 
+{
     public Guid Id { get; set; }
 
     public EditarMateriaViewModel() { }
@@ -28,6 +30,18 @@ public class EditarMateriaViewModel : FormularioMateriaViewModel {
         Nome = nome;
         Disciplina = disciplina;
         Serie = serie;
+    }
+}
+
+public class ExcluirMateriaViewModel 
+{
+    public Guid Id { get; set; }
+    public string Nome { get; set; } = string.Empty;
+
+    public ExcluirMateriaViewModel() { }
+    public ExcluirMateriaViewModel(Guid id, string nome) : this() {
+        Id = id;
+        Nome = nome;
     }
 }
 
