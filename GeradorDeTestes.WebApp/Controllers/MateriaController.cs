@@ -73,4 +73,13 @@ public class MateriaController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
+    [HttpGet("detalhes/{id:guid}")]
+    public IActionResult Detalhes(Guid id) {
+        var registro = _repositorioMateria.SelecionarRegistroPorId(id);
+
+        var detalhesVM = new DetalhesMateriasViewModel(id, registro!.Nome, registro.Disciplina, registro.Serie);
+
+        return View(detalhesVM);
+    }
 }
