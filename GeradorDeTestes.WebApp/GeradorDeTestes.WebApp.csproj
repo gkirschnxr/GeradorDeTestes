@@ -20,4 +20,9 @@
     <ProjectReference Include="..\GeradorDeTestes.Infraestrutura.Orm\GeradorDeTestes.Infraestrutura.Orm.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\lib\bootstrap-5.3.6-dist\.DS_Store" />
+    <None Include="wwwroot\lib\bootstrap-5.3.6-dist\css\.DS_Store" />
+  </ItemGroup>
+
 </Project>
