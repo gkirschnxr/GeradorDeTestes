@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GeradorDeTestes.Dominio.ModuloQuestoes;
+using Microsoft.EntityFrameworkCore;
 
 namespace GeradorDeTestes.Infraestrutura.Orm.Compartilhado
 {
     public class GeradorDeTestesDbContext : DbContext 
     {
-
+        public DbSet<Questao> Questoes { get; set; }
 
         public GeradorDeTestesDbContext(DbContextOptions options) :base(options){}
 

@@ -1,3 +1,7 @@
+using GeradorDeTestes.Dominio.ModuloQuestoes;
+using GeradorDeTestes.Infraestrutura.Orm.ModuloQuestoes;
+using GeradorDeTestes.WebApp.DependencyInjection;
+
 namespace GeradorDeTestes.WebApp
 {
     public class Program
@@ -5,9 +9,23 @@ namespace GeradorDeTestes.WebApp
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddScoped<IRepositorioQuestao, RepositorioQuestaoEmOrm>();
+
+            builder.Services.AddEntityFrameworkConfig(builder.Configuration);
+            builder.Services.AddSerilogConfig(builder.Logging);
+
+            builder.Services.AddControllersWithViews();
+            
             var app = builder.Build();
 
-            app.MapGet("/", () => "Hello World!");
+            
+
+            app.UseAntiforgery();
+            app.UseStaticFiles();
+            app.UseRouting();
+            app.MapDefaultControllerRoute();
+
 
             app.Run();
         }
