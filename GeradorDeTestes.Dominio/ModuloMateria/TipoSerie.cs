@@ -1,6 +1,6 @@
-﻿namespace GeradorDeTestes.Dominio.ModuloTarefa;
+﻿namespace GeradorDeTestes.Dominio.ModuloMateria;
 
-public enum Serie
+public enum TipoSerie
 {
     QuintoAno,
     SextoAno,
