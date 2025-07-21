@@ -13,11 +13,11 @@ namespace GeradorDeTestes.Dominio.ModuloQuestoes
             Alternativas = new List<AlternativaQuestao>();
         }
 
-        public Questao(string enunciado) : this()
+        public Questao(string enunciado, bool correta) : this()
         {
             Id  = Guid.NewGuid();
             Enunciado = enunciado;
-            Correta = false;
+            Correta = correta;
         }
 
         public AlternativaQuestao AdicionarAlternativa(string titulo)

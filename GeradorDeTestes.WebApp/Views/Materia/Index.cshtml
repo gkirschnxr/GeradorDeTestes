@@ -1,0 +1,45 @@
+﻿
+@model VisualizarMateriasViewModel
+
+@{
+    Layout = "_Layout";
+    ViewBag.Titulo = "Visualização de Matérias";
+}
+
+<p>
+    <a class="btn btn-primary px-4" href="/tarefas/cadastrar">
+        <i class="bi bi-plus"></i>
+        Cadastrar Nova
+    </a>
+</p>
+
+<hr />
+
+<div class="d-flex flex-wrap gap-2">
+    @foreach (var item in Model.Registros)
+    {
+        <div class="col-12 col-md-3">
+            <div class="card border-0" style="min-height: 238px;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">@item.Nome</h5>
+                    <p class="card-text mb-0"><span class="fw-semibold">Disciplina:</span> @item.Disciplina.ToString()</p>
+                    <p class="card-text mb-0"><span class="fw-semibold">Série:</span> @item.Serie.ToString()</p>
+
+@*                     @if (!string.IsNullOrWhiteSpace(item.Contato))
+                    {
+                        <p class="card-text"><span class="fw-semibold">Contato:</span> @item.Contato</p>
+                    } *@
+
+                    <span class="d-flex gap-1 justify-content-end mt-auto">
+                        <a href="/materias/editar/@item.Id" class="btn btn-primary rounded-circle opcao-card">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a href="/materias/excluir/@item.Id" class="btn btn-danger rounded-circle opcao-card">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    }
+</div>

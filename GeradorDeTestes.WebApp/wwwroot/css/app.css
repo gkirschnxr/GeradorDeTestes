@@ -1,0 +1,41 @@
+﻿.navbar-brand {
+    font-size: 1.4rem;
+}
+
+body {
+    background-color: #181a1b;
+    color: #f1f1f1;
+}
+
+.container {
+    display: flex;
+    flex-wrap: initial;
+}
+
+.navbar, .navbar-nav, .navbar-brand, .nav-link {
+    background-color: #23272b !important;
+    color: #f1f1f1 !important;
+}
+
+.card {
+    background-color: #23272b;
+    color: #f1f1f1;
+}
+
+.btn {
+    background-color: #343a40;
+    color: #f1f1f1;
+    border-color: #444;
+}
+
+.btn:hover, .btn:focus {
+    background-color: #495057;
+    color: #fff;
+}
+
+.centralizar-erro {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
