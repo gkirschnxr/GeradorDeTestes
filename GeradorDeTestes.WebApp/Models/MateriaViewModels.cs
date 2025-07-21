@@ -7,6 +7,8 @@ namespace GeradorDeTestes.WebApp.Models;
 public class FormularioMateriaViewModel 
 {
     [Required(ErrorMessage = "O campo \"Nome\" é obrigatório.")]
+    [MinLength(2, ErrorMessage = "O campo \"Nome\" não pode conter menos que dois caracteres.")]
+    [MaxLength(100, ErrorMessage = "O campo \"Nome\" não pode conter mais que dois caracteres.")]
     public string Nome { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "O campo \"Disciplina\" é obrigatório.")]

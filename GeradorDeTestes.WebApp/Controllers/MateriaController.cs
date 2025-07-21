@@ -1,4 +1,5 @@
 ﻿using GeradorDeTestes.Dominio.ModuloMateria;
+using GeradorDeTestes.Infraestrutura.Orm.Compartilhado;
 using GeradorDeTestes.WebApp.Extensions;
 using GeradorDeTestes.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -8,11 +9,14 @@ namespace GeradorDeTestes.WebApp.Controllers;
 [Route("materias")]
 public class MateriaController : Controller
 {
+    private readonly GeradorDeTestesDbContext _contexto;
     private readonly IRepositorioMateria _repositorioMateria;
 
-    public MateriaController(IRepositorioMateria repositorioMateria) {
+    public MateriaController(GeradorDeTestesDbContext contexto, IRepositorioMateria repositorioMateria) {
+        _contexto = contexto;
         _repositorioMateria = repositorioMateria;
     }
+
 
     [HttpGet]
     public IActionResult Index() {
@@ -23,6 +27,7 @@ public class MateriaController : Controller
         return View(visualizarVM);
     }
 
+
     [HttpGet("cadastrar")]
     public IActionResult Cadastrar() {
         var cadastrarVM = new CadastrarMateriaViewModel();
@@ -30,13 +35,30 @@ public class MateriaController : Controller
         return View(cadastrarVM);
     }
 
+
     [HttpPost("cadastrar")]
     [ValidateAntiForgeryToken]
     public IActionResult Cadastrar(CadastrarMateriaViewModel cadastrarVM) {
         var registro = cadastrarVM.ParaEntidade();
 
+        var transacao = _contexto.Database.BeginTransaction();
+
+        try {
+            _repositorioMateria.CadastrarRegistro(registro);
+
+            _contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception) {
+            transacao.Rollback();
+
+            throw;
+        }
+
         return RedirectToAction(nameof(Index));
     }
+
 
     [HttpGet("editar/{id:guid}")]
     public IActionResult Editar(Guid id) {
@@ -47,6 +69,7 @@ public class MateriaController : Controller
         return View(editarVM);
     }
 
+
     [HttpPost("editar/{id:guid}")]
     [ValidateAntiForgeryToken]
     public IActionResult Editar(Guid id, EditarMateriaViewModel editarVM) {
@@ -54,8 +77,24 @@ public class MateriaController : Controller
 
         var registroEditado = editarVM.ParaEntidade();
 
+        var transacao = _contexto.Database.BeginTransaction();
+
+        try {
+            _repositorioMateria.EditarRegistro(id, registroEditado);
+
+            _contexto.SaveChanges();
+
+            transacao.Commit();
+        }
+        catch (Exception) { 
+            transacao.Rollback(); 
+
+            throw;
+        }
+
         return RedirectToAction(nameof(Index));
     }
+
 
     [HttpGet("excluir/{id:guid}")]
     public IActionResult Excluir(Guid id) {
@@ -66,13 +105,28 @@ public class MateriaController : Controller
         return View(excluirVM);
     }
 
+
     [HttpPost("excluir/{id:guid}")]
     [ValidateAntiForgeryToken]
     public IActionResult ExcluirRegistro(Guid id) {
-        _repositorioMateria.ExcluirRegistro(id);     
+        var transacao = _contexto.Database.BeginTransaction();
+
+        try {
+            _repositorioMateria.ExcluirRegistro(id);
+
+            _contexto.SaveChanges();
+
+            transacao.Commit();
+        } 
+        catch (Exception) {
+            transacao.Rollback();
+
+            throw;
+        }
 
         return RedirectToAction(nameof(Index));
     }
+
 
     [HttpGet("detalhes/{id:guid}")]
     public IActionResult Detalhes(Guid id) {
