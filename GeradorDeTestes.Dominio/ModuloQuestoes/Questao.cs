@@ -4,6 +4,7 @@ namespace GeradorDeTestes.Dominio.ModuloQuestoes
 {
     public class Questao : EntidadeBase<Questao>
     {
+        public Guid Id { get; set; }
         public string Enunciado { get; set; }
         public List<AlternativaQuestao> Alternativas { get; set; }
         public bool FoiAcertada { get; set; }

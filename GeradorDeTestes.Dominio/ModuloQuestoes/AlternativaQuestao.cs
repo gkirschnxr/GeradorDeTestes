@@ -5,6 +5,7 @@
         public Guid Id { get; set; }
         public string Texto { get; set; }
         public bool Correta { get; set; }
+        public Guid QuestaoId { get; set; }
         public Questao Questao { get; set; }
 
         public AlternativaQuestao(){}

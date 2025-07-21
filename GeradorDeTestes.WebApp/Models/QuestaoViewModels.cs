@@ -1,5 +1,7 @@
-﻿using GeradorDeTestes.Dominio.ModuloQuestoes;
+﻿using GeradorDeTestes.Dominio.ModuloMateria;
+using GeradorDeTestes.Dominio.ModuloQuestoes;
 using GeradorDeTestes.WebApp.Extensions;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace GeradorDeTestes.WebApp.Models
@@ -9,8 +11,9 @@ namespace GeradorDeTestes.WebApp.Models
         [Required(ErrorMessage = "O campo 'Enunciado' é obrigatório.")]
         [MinLength(2, ErrorMessage = "O campo 'Enunciado' precisa conter ao menos 2 caracteres.")]
         public string Enunciado { get; set; }
-
         public bool Correta { get; set; }
+        public Guid MateriaId{ get; set; }
+        public List<SelectListItem> MateriasDisponiveis { get; set; } = new List<SelectListItem>();
     }
 
     public class CadastrarQuestaoViewModel : FormularioQuestaoViewModels
@@ -28,11 +31,18 @@ namespace GeradorDeTestes.WebApp.Models
     {
         public Guid Id { get; set; }
         public EditarQuestaoViewModel(){}
-        public EditarQuestaoViewModel(Guid id, string enunciado, bool correta)
+        public EditarQuestaoViewModel(
+            Guid id, 
+            string enunciado, 
+            bool correta,
+            List<AlternativaQuestao> alternativas,
+            List<Materia> materias
+            )
         {
             Id = id;
             Enunciado = enunciado;
             Correta = correta;
+            
         }
     }
 
@@ -71,6 +81,36 @@ namespace GeradorDeTestes.WebApp.Models
         {
             Id = id;
             Enunciado = enunciado;
+            Correta = correta;
+        }
+    }
+
+    public class AlternativaQuestaoViewModel 
+    {
+        public char Letra { get; set; }
+        public string Resposta { get; set; }
+        public bool Correta { get; set; }
+        
+        public AlternativaQuestaoViewModel(){}
+
+        public AlternativaQuestaoViewModel(char letra, string resposta, bool correta)
+        {
+            Letra = letra;
+            Resposta = resposta;
+            Correta = correta;
+        }
+    }
+
+    public class AdicionarAlternativaQuestaoViewModel 
+    {
+        public string Resposta { get; set; }
+        public bool Correta { get; set; }
+
+        public AdicionarAlternativaQuestaoViewModel(){}
+
+        public AdicionarAlternativaQuestaoViewModel(string resposta, bool correta)
+        {
+            Resposta= resposta;
             Correta = correta;
         }
     }

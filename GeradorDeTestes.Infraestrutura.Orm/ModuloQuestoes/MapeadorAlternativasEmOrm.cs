@@ -1,11 +1,6 @@
 ﻿using GeradorDeTestes.Dominio.ModuloQuestoes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GeradorDeTestes.Infraestrutura.Orm.ModuloQuestoes
 {
@@ -20,10 +15,13 @@ namespace GeradorDeTestes.Infraestrutura.Orm.ModuloQuestoes
                 .IsRequired();
             builder.Property(x => x.Correta)
                 .IsRequired();
-            builder.HasOne(x => x.Questao)
+            builder.Property(x => x.QuestaoId)
+                .IsRequired();
+            builder.HasOne(a => a.Questao)
                 .WithMany(x => x.Alternativas)
-                .IsRequired(); 
-                
+                .IsRequired();
+
+
         }
     }
 }

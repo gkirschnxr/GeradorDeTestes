@@ -15,7 +15,10 @@ namespace GeradorDeTestes.Infraestrutura.Orm.ModuloQuestoes
                 .IsRequired();
             builder.Property(x => x.FoiAcertada)
                 .IsRequired();
-            
+            builder.HasMany(q => q.Alternativas)
+                .WithOne(a => a.Questao)
+                .HasForeignKey(a => a.QuestaoId)
+                .HasConstraintName("FK_TBAlternativa_TBQuestao");
         }
     }
 }
