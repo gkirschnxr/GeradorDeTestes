@@ -7,7 +7,7 @@ namespace GeradorDeTestes.WebApp.Extensions;
 public static class MateriaExtensions
 {
     public static Materia ParaEntidade(this FormularioMateriaViewModel formularioVM) {
-        return new Materia(formularioVM.Nome, formularioVM.Disciplina, formularioVM.Serie);
+        return new Materia(formularioVM.Nome, formularioVM.Disciplina, (Serie)formularioVM.Serie);
     }
 
     public static DetalhesMateriasViewModel ParaDetalhesVM(this Materia Materia) {

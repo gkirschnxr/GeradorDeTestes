@@ -15,13 +15,13 @@ public class FormularioMateriaViewModel
     public TipoDisciplina Disciplina { get; set; }
 
     [Required(ErrorMessage = "O campo \"Série\" é obrigatório.")]
-    public TipoSerie Serie { get; set; }
+    public Serie Serie { get; set; }
 }
 
 public class CadastrarMateriaViewModel : FormularioMateriaViewModel
 {
     public CadastrarMateriaViewModel() { }
-    public CadastrarMateriaViewModel(string nome, TipoDisciplina disciplina, TipoSerie serie) : this() {
+    public CadastrarMateriaViewModel(string nome, TipoDisciplina disciplina, Serie serie) : this() {
         Nome = nome;
         Disciplina = disciplina;
         Serie = serie;
@@ -33,7 +33,7 @@ public class EditarMateriaViewModel : FormularioMateriaViewModel
     public Guid Id { get; set; }
 
     public EditarMateriaViewModel() { }
-    public EditarMateriaViewModel(Guid id, string nome, TipoDisciplina disciplina, TipoSerie serie) : this() {
+    public EditarMateriaViewModel(Guid id, string nome, TipoDisciplina disciplina, Serie serie) : this() {
         Id = id;
         Nome = nome;
         Disciplina = disciplina;
@@ -71,9 +71,9 @@ public class DetalhesMateriasViewModel
     public Guid Id { get; set; }
     public string Nome { get; set; }
     public TipoDisciplina Disciplina { get; set; }
-    public TipoSerie Serie { get; set; }
+    public Serie Serie { get; set; }
 
-    public DetalhesMateriasViewModel(Guid id, string nome, TipoDisciplina disciplina, TipoSerie serie) {
+    public DetalhesMateriasViewModel(Guid id, string nome, TipoDisciplina disciplina, Serie serie) {
         Id = id;
         Nome = nome;
         Disciplina = disciplina;

@@ -1,4 +1,4 @@
-﻿using GeradorDeTestes.Dominio.Disciplina;
+﻿using GeradorDeTestes.Dominio.ModuloDisciplina;
 using GeradorDeTestes.WebApp.Models;
 
 namespace GeradorDeTestes.WebApp.Extensions
@@ -7,7 +7,7 @@ namespace GeradorDeTestes.WebApp.Extensions
     {
         public static Disciplina ParaEntidade(this FormularioDisciplinaViewModel formularioVM)
         {
-            return new Disciplina(formularioVM.Nome);
+            return new Disciplina(formularioVM.Nome!);
         }
 
         public static DetalhesDisciplinaViewModel ParaDetalhesVM(this Disciplina disciplina)

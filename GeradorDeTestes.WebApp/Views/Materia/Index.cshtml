@@ -26,6 +26,9 @@
                             <p class="card-text mb-0"><span class="fw-semibold">Disciplina:</span> @item.Disciplina.ToString()</p>
                             <p class="card-text mb-0"><span class="fw-semibold">Série:</span> @item.Serie.ToString()</p>
                             <span class="d-flex gap-1 justify-content-end mt-auto">
+                                <a href="/materias/detalhes/@item.Id" class="btn btn-secondary">
+                                    <i class="bi bi-search"></i>
+                                </a>
                                 <a href="/materias/editar/@item.Id" class="btn btn-primary rounded-circle opcao-card">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
