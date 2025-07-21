@@ -55,7 +55,7 @@ namespace GeradorDeTestes.WebApp.Controllers
             var editarVM = new EditarQuestaoViewModel(
                 id,
                 registroSelecionado.Enunciado,
-                registroSelecionado.Correta
+                registroSelecionado.FoiAcertada
             );
 
             return View(editarVM);

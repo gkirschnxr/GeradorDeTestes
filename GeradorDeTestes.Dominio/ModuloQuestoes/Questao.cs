@@ -6,7 +6,7 @@ namespace GeradorDeTestes.Dominio.ModuloQuestoes
     {
         public string Enunciado { get; set; }
         public List<AlternativaQuestao> Alternativas { get; set; }
-        public bool Correta { get; set; }
+        public bool FoiAcertada { get; set; }
 
         public Questao()
         {
@@ -17,7 +17,7 @@ namespace GeradorDeTestes.Dominio.ModuloQuestoes
         {
             Id  = Guid.NewGuid();
             Enunciado = enunciado;
-            Correta = correta;
+            FoiAcertada = correta;
         }
 
         public AlternativaQuestao AdicionarAlternativa(string titulo)
@@ -56,12 +56,12 @@ namespace GeradorDeTestes.Dominio.ModuloQuestoes
 
         public void EstaCorreta()
         {
-            Correta = true;
+            FoiAcertada = true;
         }
 
         public void EstaIncorreta()
         {
-            Correta = false;
+            FoiAcertada = false;
         }
 
         public override void AtualizarRegistro(Questao registroEditado)

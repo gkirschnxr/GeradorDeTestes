@@ -8,6 +8,13 @@ namespace GeradorDeTestes.Infraestrutura.Orm.ModuloQuestoes
     {
         public void Configure(EntityTypeBuilder<Questao> builder)
         {
+            builder.Property(x => x.Id)
+                .ValueGeneratedNever()
+                .IsRequired();
+            builder.Property(x => x.Enunciado)
+                .IsRequired();
+            builder.Property(x => x.FoiAcertada)
+                .IsRequired();
             
         }
     }

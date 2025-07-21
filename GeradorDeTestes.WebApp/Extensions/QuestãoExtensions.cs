@@ -15,7 +15,7 @@ namespace GeradorDeTestes.WebApp.Extensions
             return new DetalhesQuestaoViewModel(
                 questao.Id,
                 questao.Enunciado,
-                questao.Correta
+                questao.FoiAcertada
                 );
         }
     }

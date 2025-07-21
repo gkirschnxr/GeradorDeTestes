@@ -3,16 +3,16 @@
     public class AlternativaQuestao
     {
         public Guid Id { get; set; }
-        public string Titulo { get; set; }
+        public string Texto { get; set; }
         public bool Correta { get; set; }
         public Questao Questao { get; set; }
 
         public AlternativaQuestao(){}
 
-        public AlternativaQuestao(string titulo, Questao questao) : this()
+        public AlternativaQuestao(string texto, Questao questao) : this()
         {
             Id = Guid.NewGuid();
-            Titulo = titulo;
+            Texto = texto;
             Correta = false;
             Questao = questao;
         }

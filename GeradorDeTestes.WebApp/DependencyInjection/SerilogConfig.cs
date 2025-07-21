@@ -22,4 +22,4 @@ public static class SerilogConfig
         services.AddSerilog();
     }
 }
-}
+
