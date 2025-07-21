@@ -1,12 +1,18 @@
 ﻿using GeradorDeTestes.Dominio.ModuloMateria;
 using GeradorDeTestes.WebApp.Extensions;
+using System.ComponentModel.DataAnnotations;
 
 namespace GeradorDeTestes.WebApp.Models;
 
 public class FormularioMateriaViewModel 
 {
+    [Required(ErrorMessage = "O campo \"Nome\" é obrigatório.")]
     public string Nome { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "O campo \"Disciplina\" é obrigatório.")]
     public TipoDisciplina Disciplina { get; set; }
+
+    [Required(ErrorMessage = "O campo \"Série\" é obrigatório.")]
     public TipoSerie Serie { get; set; }
 }
 
