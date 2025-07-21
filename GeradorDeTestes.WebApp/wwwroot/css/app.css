@@ -28,10 +28,10 @@ body {
     border-color: #444;
 }
 
-    .btn:hover, .btn:focus {
-        background-color: #495057;
-        color: #fff;
-    }
+.btn:hover, .btn:focus {
+    background-color: #495057;
+    color: #fff;
+}
 
 .centralizar-erro {
     min-height: 80vh;
