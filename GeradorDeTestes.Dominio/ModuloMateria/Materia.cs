@@ -5,11 +5,12 @@ public class Materia : EntidadeBase<Materia>
 {
     public string Nome { get; set; } = string.Empty;
     public TipoDisciplina Disciplina { get; set; }
-    public TipoSerie Serie { get; set; }
+    public Serie Serie { get; set; }
 
     public Materia() { }
 
-    public Materia(string nome, TipoDisciplina disciplina, TipoSerie serie) {
+    public Materia(string nome, TipoDisciplina disciplina, Serie serie) {
+        Id = Guid.NewGuid();
         Nome = nome;
         Disciplina = disciplina;
         Serie = serie;

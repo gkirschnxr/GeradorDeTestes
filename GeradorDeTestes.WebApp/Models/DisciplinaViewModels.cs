@@ -1,4 +1,4 @@
-﻿using GeradorDeTestes.Dominio.Disciplina;
+﻿using GeradorDeTestes.Dominio.ModuloDisciplina;
 using GeradorDeTestes.WebApp.Extensions;
 using System.ComponentModel.DataAnnotations;
 

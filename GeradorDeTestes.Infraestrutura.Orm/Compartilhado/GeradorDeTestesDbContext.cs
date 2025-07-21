@@ -10,7 +10,7 @@ namespace GeradorDeTestes.Infraestrutura.Orm.Compartilhado
         public DbSet<Questao> Questoes { get; set; }
         public DbSet<AlternativaQuestao> Alternativas { get; set; }
 
-        public GeradorDeTestesDbContext(DbContextOptions options) :base(options){}
+        public GeradorDeTestesDbContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

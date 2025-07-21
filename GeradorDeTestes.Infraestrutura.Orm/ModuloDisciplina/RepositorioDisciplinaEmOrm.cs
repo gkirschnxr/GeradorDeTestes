@@ -1,4 +1,4 @@
-﻿using GeradorDeTestes.Dominio.Disciplina;
+﻿using GeradorDeTestes.Dominio.ModuloDisciplina;
 using GeradorDeTestes.Infraestrutura.Orm.Compartilhado;
 namespace GeradorDeTestes.Infraestrutura.Orm.ModuloDisciplina;
 public class RepositorioDisciplinaEmOrm : RepositorioBaseEmOrm<Disciplina>, IRepositorioDisciplina

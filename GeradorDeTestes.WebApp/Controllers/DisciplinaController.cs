@@ -1,5 +1,4 @@
-﻿using GeradorDeTestes.Dominio.Disciplina;
-using GeradorDeTestes.Infraestrutura.Orm.ModuloDisciplina;
+﻿using GeradorDeTestes.Dominio.ModuloDisciplina;
 using GeradorDeTestes.WebApp.Extensions;
 using GeradorDeTestes.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -67,7 +66,7 @@ namespace GeradorDeTestes.WebApp.Controllers
 
             var editarVM = new EditarDisciplinaViewModel(
                 id,
-                registroSelecionado.Nome
+                registroSelecionado!.Nome
             );
 
             return View(editarVM);
@@ -103,7 +102,7 @@ namespace GeradorDeTestes.WebApp.Controllers
         {
             var registroSelecionado = repositorioDisciplina.SelecionarRegistroPorId(id);
 
-            var excluirVM = new ExcluirDisciplinaViewModel(registroSelecionado.Id, registroSelecionado.Nome);
+            var excluirVM = new ExcluirDisciplinaViewModel(registroSelecionado!.Id, registroSelecionado.Nome);
 
             return View(excluirVM);
         }
@@ -124,7 +123,7 @@ namespace GeradorDeTestes.WebApp.Controllers
 
             var detalhesVM = new DetalhesDisciplinaViewModel(
                 id,
-                registroSelecionado.Nome
+                registroSelecionado!.Nome
                 //registroSelecionado.Materia
             );
 
