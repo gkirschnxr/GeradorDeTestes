@@ -1,4 +1,5 @@
 ﻿using GeradorDeTestes.Dominio.Disciplina;
+using GeradorDeTestes.Infraestrutura.Orm.ModuloDisciplina;
 using GeradorDeTestes.WebApp.Extensions;
 using GeradorDeTestes.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -8,13 +9,12 @@ namespace GeradorDeTestes.WebApp.Controllers
     [Route("disciplinas")]
     public class DisciplinaController : Controller
     {
-        private readonly ContextoDados contexto;
+        
         private readonly IRepositorioDisciplina repositorioDisciplina;
 
-        public DisciplinaController()
+        public DisciplinaController(IRepositorioDisciplina repositorioDisciplina)
         {
-            contexto = new ContextoDados(true);
-            repositorioDisciplina = new RepositorioDisciplina(contexto);
+            this.repositorioDisciplina = repositorioDisciplina;
         }
 
         [HttpGet]
@@ -22,7 +22,7 @@ namespace GeradorDeTestes.WebApp.Controllers
         {
             var registros = repositorioDisciplina.SelecionarRegistros();
 
-            var visualizarVM = new VisualizarDisciplinasViewModel(registros);
+            var visualizarVM = new VisualizarDisciplinaViewModel(registros);
 
             return View(visualizarVM);
         }
