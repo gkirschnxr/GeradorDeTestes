@@ -16,4 +16,4 @@ public static class EntityFrameworkConfig
             options.UseSqlServer(connectionString));
     }
 }
-}
+

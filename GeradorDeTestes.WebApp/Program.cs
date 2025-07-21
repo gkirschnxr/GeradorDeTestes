@@ -1,10 +1,8 @@
 using GeradorDeTestes.Dominio.ModuloQuestoes;
 using GeradorDeTestes.Infraestrutura.Orm.ModuloQuestoes;
 using GeradorDeTestes.WebApp.DependencyInjection;
-
 using GeradorDeTestes.Dominio.ModuloMateria;
 using GeradorDeTestes.Infraestrutura.Orm.ModuloMateria;
-using GeradorDeTestes.WebApp.DependencyInjection;
 
 namespace GeradorDeTestes.WebApp
 {
