@@ -4,6 +4,8 @@ using GeradorDeTestes.Infraestrutura.Orm.Compartilhado;
 using GeradorDeTestes.WebApp.Extensions;
 using GeradorDeTestes.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 
 namespace GeradorDeTestes.WebApp.Controllers
 {
@@ -34,6 +36,7 @@ namespace GeradorDeTestes.WebApp.Controllers
         }
 
         [HttpGet("cadastrar")]
+        [ValidateAntiForgeryToken]
         public IActionResult Cadastrar()
         {
             return View(new CadastrarQuestaoViewModel());
@@ -43,14 +46,55 @@ namespace GeradorDeTestes.WebApp.Controllers
         public IActionResult Cadastrar(CadastrarQuestaoViewModel cadastrarVM) 
         {
             var registros = repositorioQuestao.SelecionarRegistros();
+            var materias = repositorioMateria.SelecionarRegistros();
+
+            var transacao = contexto.Database.BeginTransaction();
+
+            try
+            {
+                var entidade = cadastrarVM.ParaEntidade();
+
+                repositorioQuestao.CadastrarRegistro(entidade);
+
+                transacao.Commit();
+            }
+            catch (Exception ex) 
+            {
+                    transacao.Rollback();
+
+                throw;
+            }
             
-            var entidade = cadastrarVM.ParaEntidade();
-
-            repositorioQuestao.CadastrarRegistro(entidade);
-
-            contexto.SaveChanges();
-
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost("cadastrar/adicionar-alternativa")]
+        public IActionResult AdicionarAlternativa(CadastrarQuestaoViewModel cadastrarVM, AdicionarAlternativaQuestaoViewModel alternativaVM)
+        {
+            cadastrarVM.MateriasDisponiveis = repositorioMateria.SelecionarRegistros()
+                .Select(m => new SelectListItem(m.Nome, m.Id.ToString()))
+                .ToList();
+
+            cadastrarVM.AdicionarAlternativa(alternativaVM);
+
+            return View(nameof(Cadastrar), cadastrarVM);
+        }
+
+        [HttpPost("cadastrar/remover-alternativa/{letra:alpha}")]
+        public IActionResult RemoverAlternativa(char letra, CadastrarQuestaoViewModel cadastrarVM)
+        {
+            var alternativa = cadastrarVM.AlternativasSelecionadas
+                .Find(a => a.Letra.Equals(letra));
+
+            if(alternativa is not null)
+                cadastrarVM.RemoverAlternativa(alternativa);
+
+            cadastrarVM.MateriasDisponiveis = repositorioMateria
+                .SelecionarRegistros()
+                .Select(m => new SelectListItem(m.Nome, m.Id.ToString()))
+                .ToList();
+
+            return View(nameof(Cadastrar), cadastrarVM);
         }
 
         [HttpGet("editar/{id:guid}")]
@@ -68,6 +112,42 @@ namespace GeradorDeTestes.WebApp.Controllers
 
             return View(editarVM);
         }
+
+        [HttpPost("editar/{id:guid}")]
+        public IActionResult Editar(Guid id, EditarQuestaoViewModel editarVM)
+        {
+            var registros = repositorioQuestao.SelecionarRegistros();
+
+            var entidadeEditada = editarVM.ParaEntidade();
+
+            repositorioQuestao.EditarRegistro(id, entidadeEditada);
+
+            contexto.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet("excluir/{id:guid}")]
+        public IActionResult Excluir(Guid id)
+        {
+            var registroSelecionado = repositorioQuestao.SelecionarRegistroPorId(id);
+
+            var excluirVM = new ExcluirQuestaoViewModel(registroSelecionado.Id, registroSelecionado.Enunciado);
+
+            return View(excluirVM);
+        }
+
+        [HttpPost("excluir/{id:guid}")]
+        public IActionResult ExcluirConfirmado(Guid id)
+        {
+            repositorioQuestao.ExcluirRegistro(id);
+
+            contexto.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
 
 
     }

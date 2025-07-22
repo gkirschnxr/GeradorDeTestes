@@ -14,6 +14,36 @@ namespace GeradorDeTestes.WebApp.Models
         public bool Correta { get; set; }
         public Guid MateriaId{ get; set; }
         public List<SelectListItem> MateriasDisponiveis { get; set; } = new List<SelectListItem>();
+        public List<AlternativaQuestaoViewModel> AlternativasSelecionadas { get; set; } = new List<AlternativaQuestaoViewModel>();
+
+        public void AdicionarAlternativa(AdicionarAlternativaQuestaoViewModel alternativaVM)
+        {
+            if (AlternativasSelecionadas == null)
+                AlternativasSelecionadas = new List<AlternativaQuestaoViewModel>();
+
+            
+            char letra = (char)('A' + AlternativasSelecionadas.Count);
+
+            var novaAlternativa = new AlternativaQuestaoViewModel(letra, alternativaVM.Resposta, alternativaVM.Correta);
+            AlternativasSelecionadas.Add(novaAlternativa);
+        }
+
+        public void RemoverAlternativa(AlternativaQuestaoViewModel alternativaVm)
+        {
+            AlternativasSelecionadas?.Remove(alternativaVm);
+            ReatribuirLetras();
+        }
+
+        private void ReatribuirLetras()
+        {
+            if (AlternativasSelecionadas == null)
+                return;
+
+            for (int i = 0; i < AlternativasSelecionadas.Count; i++)
+            {
+                AlternativasSelecionadas[i].Letra = (char)('A' + i);
+            }
+        }
     }
 
     public class CadastrarQuestaoViewModel : FormularioQuestaoViewModels
@@ -25,6 +55,8 @@ namespace GeradorDeTestes.WebApp.Models
             Enunciado = enunciado;
             Correta = correta;
         }
+
+        
     }
 
     public class EditarQuestaoViewModel : FormularioQuestaoViewModels
@@ -114,4 +146,6 @@ namespace GeradorDeTestes.WebApp.Models
             Correta = correta;
         }
     }
+
+
 }

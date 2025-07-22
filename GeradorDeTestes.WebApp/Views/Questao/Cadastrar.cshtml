@@ -1,0 +1,50 @@
+﻿@using GeradorDeTestes.WebApp.Extensions
+
+@model CadastrarQuestaoViewModel
+
+@{
+    Layout = "_Layout";
+    ViewBag.Titulo = "Cadastro de Enunciado";
+}
+
+<hr />
+<div class="row justify-content-center my-5">
+    <div class="col-md-8">
+        <div class="card rounded-4 border-0">
+            <div class="card-body p-md-5">
+                <form asp-action="Cadastrar">
+                    <h3>Formulário de Cadastro</h3>
+
+                    <div class="form-group d-grid gap-2 mt-3">
+                        <label asp-for="Enunciado" class="control-label fs-5">Enunciado:</label>
+                        <input asp-for="Enunciado" class="form-control" placeholder="Informe o Enunciado" />
+                        <span asp-validation-for="Enunciado" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group d-grid gap-2 mt-3">
+                        <label asp-for="MateriasDisponiveis" class="control-label fs-5">Matéria:</label>
+                        <select asp-for="MateriasDisponiveis" id="inputDisciplina" class="form-select"></select>
+                        <span asp-validation-for="MateriasDisponiveis" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group d-grid gap-2 mt-3">
+                        <label asp-for="Correta" class="control-label fs-5">Correta</label>
+                        <select asp-for="Correta" id="inputSerie" class="form-select"></select>
+                        <span asp-validation-for="Correta" class="text-danger"></span>
+                    </div>
+
+
+
+                    <div class="form-group d-flex align-items-center justify-content-end gap-3 mt-5">
+                        <a href="/materias">Voltar para a listagem</a>
+                        <button type="submit" class="btn btn-primary rounded-3 px-5">Confirmar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
