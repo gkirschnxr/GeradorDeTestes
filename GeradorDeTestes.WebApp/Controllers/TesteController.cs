@@ -63,4 +63,25 @@ public class TesteController : Controller {
 
         return RedirectToAction(nameof(Index));
     }
+
+    [HttpPost("preview")]
+    [ValidateAntiForgeryToken]
+    public IActionResult Preview(GerarTesteViewModel gerarVM) {
+        var questoes = _repositorioQuestao.SelecionarRegistros()
+            .Where(q => q.Materias.Any(m => m.Id == gerarVM.MateriaId && m.Serie == gerarVM.Serie))
+            .ToList();
+
+        if (gerarVM.QuantidadeQuestoes > questoes.Count) {
+            ModelState.AddModelError(nameof(gerarVM.QuantidadeQuestoes), "Quantidade maior do que o número de questões disponíveis.");
+        }
+
+        gerarVM.Disciplinas = _repositorioDisciplina.SelecionarRegistros();
+        gerarVM.Materias = _repositorioMateria.SelecionarRegistros();
+
+        gerarVM.QuestoesSorteadas = questoes.OrderBy(_ => Guid.NewGuid())
+                                            .Take(gerarVM.QuantidadeQuestoes)
+                                            .ToList();
+
+        return View("Gerar", gerarVM);
+    }
 }
