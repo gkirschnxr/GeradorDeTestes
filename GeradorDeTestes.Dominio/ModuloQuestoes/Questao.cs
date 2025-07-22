@@ -26,7 +26,7 @@ namespace GeradorDeTestes.Dominio.ModuloQuestoes
         {
             var alternativa = new AlternativaQuestao(titulo, this);
 
-            Alternativas.Add(alternativa);
+            Alternativas!.Add(alternativa);
 
             EstaIncorreta();
 
@@ -35,21 +35,21 @@ namespace GeradorDeTestes.Dominio.ModuloQuestoes
 
         public AlternativaQuestao AdicionarAlternativa(AlternativaQuestao alternativa)
         {
-            Alternativas.Add(alternativa);
+            Alternativas!.Add(alternativa);
 
             return alternativa;
         }
 
         public bool RemoverAlternativa(AlternativaQuestao alternativa)
         {
-            Alternativas.Remove(alternativa);
+            Alternativas!.Remove(alternativa);
 
             return true;
         }
 
         public void AlternativaCorreta(AlternativaQuestao alternativa)
         {
-            if (Alternativas.Contains(alternativa))
+            if (Alternativas!.Contains(alternativa))
             {
                 EstaCorreta();
                 alternativa.EstaCorreta();
