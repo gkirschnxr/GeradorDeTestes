@@ -1,4 +1,5 @@
 ﻿using GeradorDeTestes.Dominio.Compartilhado;
+using GeradorDeTestes.Dominio.ModuloMateria;
 
 namespace GeradorDeTestes.Dominio.ModuloQuestoes
 {
@@ -7,6 +8,7 @@ namespace GeradorDeTestes.Dominio.ModuloQuestoes
         public Guid Id { get; set; }
         public string Enunciado { get; set; }
         public List<AlternativaQuestao> Alternativas { get; set; }
+        public List<Materia> Materias { get; set; } 
         public bool FoiAcertada { get; set; }
 
         public Questao()

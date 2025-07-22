@@ -1,4 +1,5 @@
-﻿using GeradorDeTestes.Dominio.ModuloQuestoes;
+﻿using GeradorDeTestes.Dominio.ModuloMateria;
+using GeradorDeTestes.Dominio.ModuloQuestoes;
 using GeradorDeTestes.Infraestrutura.Orm.Compartilhado;
 using GeradorDeTestes.WebApp.Extensions;
 using GeradorDeTestes.WebApp.Models;
@@ -11,11 +12,16 @@ namespace GeradorDeTestes.WebApp.Controllers
     {
         private readonly GeradorDeTestesDbContext contexto;
         private readonly IRepositorioQuestao repositorioQuestao;
+        private readonly IRepositorioMateria repositorioMateria;
 
-        public QuestaoController(GeradorDeTestesDbContext contexto, IRepositorioQuestao repositorioQuestao)
+        public QuestaoController(
+            GeradorDeTestesDbContext contexto, 
+            IRepositorioQuestao repositorioQuestao, 
+            IRepositorioMateria repositorioMateria)
         {
             this.contexto = contexto;
             this.repositorioQuestao = repositorioQuestao;
+            this.repositorioMateria = repositorioMateria;
         }
 
         public IActionResult Index()
@@ -54,8 +60,10 @@ namespace GeradorDeTestes.WebApp.Controllers
 
             var editarVM = new EditarQuestaoViewModel(
                 id,
-                registroSelecionado!.Enunciado,
-                registroSelecionado.FoiAcertada
+                registroSelecionado.Enunciado,
+                registroSelecionado.FoiAcertada,
+                registroSelecionado.Alternativas,
+                registroSelecionado.Materias
             );
 
             return View(editarVM);

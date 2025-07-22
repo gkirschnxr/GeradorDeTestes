@@ -23,7 +23,7 @@ public class TesteController : Controller {
         _repositorioQuestao = repositorioQuestao;
     }
 
-    [HttpGet("index")]
+    [HttpGet]
     public IActionResult Index() {
         var registros = _repositorioTeste.SelecionarRegistros();
 
