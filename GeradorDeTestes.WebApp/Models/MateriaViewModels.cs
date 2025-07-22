@@ -1,4 +1,5 @@
-﻿using GeradorDeTestes.Dominio.ModuloMateria;
+﻿using GeradorDeTestes.Dominio.ModuloDisciplina;
+using GeradorDeTestes.Dominio.ModuloMateria;
 using GeradorDeTestes.WebApp.Extensions;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,7 +13,7 @@ public class FormularioMateriaViewModel
     public string Nome { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "O campo \"Disciplina\" é obrigatório.")]
-    public TipoDisciplina Disciplina { get; set; }
+    public Disciplina? Disciplina { get; set; }
 
     [Required(ErrorMessage = "O campo \"Série\" é obrigatório.")]
     public Serie Serie { get; set; }
@@ -21,7 +22,7 @@ public class FormularioMateriaViewModel
 public class CadastrarMateriaViewModel : FormularioMateriaViewModel
 {
     public CadastrarMateriaViewModel() { }
-    public CadastrarMateriaViewModel(string nome, TipoDisciplina disciplina, Serie serie) : this() {
+    public CadastrarMateriaViewModel(string nome, Disciplina disciplina, Serie serie) : this() {
         Nome = nome;
         Disciplina = disciplina;
         Serie = serie;
@@ -33,7 +34,7 @@ public class EditarMateriaViewModel : FormularioMateriaViewModel
     public Guid Id { get; set; }
 
     public EditarMateriaViewModel() { }
-    public EditarMateriaViewModel(Guid id, string nome, TipoDisciplina disciplina, Serie serie) : this() {
+    public EditarMateriaViewModel(Guid id, string nome, Disciplina disciplina, Serie serie) : this() {
         Id = id;
         Nome = nome;
         Disciplina = disciplina;
@@ -70,10 +71,10 @@ public class DetalhesMateriasViewModel
 {
     public Guid Id { get; set; }
     public string Nome { get; set; }
-    public TipoDisciplina Disciplina { get; set; }
+    public Disciplina Disciplina { get; set; }
     public Serie Serie { get; set; }
 
-    public DetalhesMateriasViewModel(Guid id, string nome, TipoDisciplina disciplina, Serie serie) {
+    public DetalhesMateriasViewModel(Guid id, string nome, Disciplina disciplina, Serie serie) {
         Id = id;
         Nome = nome;
         Disciplina = disciplina;

@@ -8,17 +8,22 @@ public class MapeadorMateriaEmOrm : IEntityTypeConfiguration<Materia>
     public void Configure(EntityTypeBuilder<Materia> builder) {
         builder.Property(m => m.Id)
             .ValueGeneratedNever()
-            .IsRequired();
+            .IsRequired();         
 
         builder.Property(m => m.Nome)
-            .HasMaxLength(100)
-            .IsRequired();
+            .IsRequired()
+            .HasMaxLength(100);
 
         builder.Property(m => m.Serie)
             .IsRequired();
 
-        builder.Property(m => m.Disciplina)
-            .IsRequired();
-            //.WithMany(d => d.Materia)
+        builder.HasOne(m => m.Disciplina)
+            .WithMany(d => d.Materias);
+
+        builder.HasMany(m => m.Questoes)
+            .WithOne(q => q.Materias);
+
+        builder.HasMany(m => m.Testes)
+            .WithOne(t => t.Materia);
     }
 }

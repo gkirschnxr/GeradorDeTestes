@@ -11,10 +11,14 @@ namespace GeradorDeTestes.Infraestrutura.Orm.ModuloQuestoes
             builder.Property(x => x.Id)
                 .ValueGeneratedNever()
                 .IsRequired();
+
             builder.Property(x => x.Enunciado)
+                .HasMaxLength(200)
                 .IsRequired();
+
             builder.Property(x => x.FoiAcertada)
                 .IsRequired();
+
             builder.HasMany(q => q.Alternativas)
                 .WithOne(a => a.Questao)
                 .HasForeignKey(a => a.QuestaoId)

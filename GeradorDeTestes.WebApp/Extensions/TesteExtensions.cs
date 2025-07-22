@@ -7,9 +7,9 @@ namespace GeradorDeTestes.WebApp.Extensions;
 
 public static class TesteExtensions
 {
-    public static Teste ParaEntidade(this FormularioTesteViewModel formularioVM, List<Disciplina> disciplinas, List<Materia> materias) {
+    public static Teste ParaEntidade(this FormularioTesteViewModel formularioVM, List<Dominio.ModuloDisciplina.Disciplina> disciplinas, List<Materia> materias) {
 
-        Disciplina? disciplinaSelecionada = null;
+        Dominio.ModuloDisciplina.Disciplina? disciplinaSelecionada = null;
 
         foreach (var d in disciplinas) {
             if (d.Id.Equals(formularioVM.DisciplinaId)) {

@@ -6,12 +6,12 @@ namespace GeradorDeTestes.Dominio.ModuloDisciplina;
 public class Disciplina : EntidadeBase<Disciplina>
 {
     public string Nome { get; set; } = string.Empty;
-    public List<Materia> Materia { get; set; }
-    public List<Teste> Teste { get; set; }
+    public List<Materia> Materias { get; set; }
+    public List<Teste> Testes { get; set; }
 
     public Disciplina() {
-        Materia = new List<Materia>();
-        Teste = new List<Teste>();
+        Materias = new List<Materia>();
+        Testes = new List<Teste>();
     }
 
     public Disciplina(string nome) : this() {

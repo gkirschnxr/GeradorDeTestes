@@ -12,7 +12,7 @@ public class FormularioTesteViewModel
     public FormularioTesteViewModel() { }
 
     public FormularioTesteViewModel(string titulo, Serie serie, TipoTeste tipoTeste, int quantidadeQuestoes, Guid? disciplinaId,
-                                    Disciplina? disciplina, List<Disciplina>? disciplinas, Guid? materiaId, Materia? materia, List<Materia>? materias) {
+                                    Dominio.ModuloDisciplina.Disciplina? disciplina, List<Dominio.ModuloDisciplina.Disciplina>? disciplinas, Guid? materiaId, Materia? materia, List<Materia>? materias) {
         Titulo = titulo;
         Serie = serie;
         TipoTeste = tipoTeste;
@@ -42,8 +42,8 @@ public class FormularioTesteViewModel
 
     [Required(ErrorMessage = "A disciplina é obrigatória.")]
     public Guid? DisciplinaId { get; set; }
-    public Disciplina? Disciplina { get; set; }
-    public List<Disciplina>? Disciplinas { get; set; }
+    public Dominio.ModuloDisciplina.Disciplina? Disciplina { get; set; }
+    public List<Dominio.ModuloDisciplina.Disciplina>? Disciplinas { get; set; }
 
     public Guid? MateriaId { get; set; }
     public Materia? Materia { get; set; }
@@ -57,7 +57,7 @@ public class GerarTesteViewModel : FormularioTesteViewModel
     public GerarTesteViewModel() { }
 
     public GerarTesteViewModel(string titulo, Serie serie, TipoTeste tipoTeste, int quantidadeQuestoes, Guid? disciplinaId,
-                               Disciplina? disciplina, List<Disciplina>? disciplinas, Guid? materiaId, Materia? materia, List<Materia>? materias)
+                               Dominio.ModuloDisciplina.Disciplina? disciplina, List<Dominio.ModuloDisciplina.Disciplina>? disciplinas, Guid? materiaId, Materia? materia, List<Materia>? materias)
         : base() { }
 }
 
