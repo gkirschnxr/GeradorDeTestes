@@ -10,7 +10,7 @@ namespace GeradorDeTestes.WebApp.Models
     {
         [Required(ErrorMessage = "O campo 'Enunciado' é obrigatório.")]
         [MinLength(2, ErrorMessage = "O campo 'Enunciado' precisa conter ao menos 2 caracteres.")]
-        public string Enunciado { get; set; }
+        public string Enunciado { get; set; } = string.Empty;
         public bool Correta { get; set; }
         public Guid MateriaId{ get; set; }
         public List<SelectListItem> MateriasDisponiveis { get; set; } = new List<SelectListItem>();
@@ -120,7 +120,7 @@ namespace GeradorDeTestes.WebApp.Models
     public class AlternativaQuestaoViewModel 
     {
         public char Letra { get; set; }
-        public string Resposta { get; set; }
+        public string Resposta { get; set; } = string.Empty;
         public bool Correta { get; set; }
         
         public AlternativaQuestaoViewModel(){}
@@ -135,7 +135,7 @@ namespace GeradorDeTestes.WebApp.Models
 
     public class AdicionarAlternativaQuestaoViewModel 
     {
-        public string Resposta { get; set; }
+        public string Resposta { get; set; } = string.Empty;
         public bool Correta { get; set; }
 
         public AdicionarAlternativaQuestaoViewModel(){}
