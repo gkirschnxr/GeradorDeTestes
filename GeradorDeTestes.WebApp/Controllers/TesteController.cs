@@ -68,7 +68,7 @@ public class TesteController : Controller {
     [ValidateAntiForgeryToken]
     public IActionResult Preview(GerarTesteViewModel gerarVM) {
         var questoes = _repositorioQuestao.SelecionarRegistros()
-            .Where(q => q.Materias.Any(m => m.Id == gerarVM.MateriaId && m.Serie == gerarVM.Serie))
+            .Where(q => q.Materia.Any(m => m.Id == gerarVM.MateriaId && m.Serie == gerarVM.Serie))
             .ToList();
 
         if (gerarVM.QuantidadeQuestoes > questoes.Count) {

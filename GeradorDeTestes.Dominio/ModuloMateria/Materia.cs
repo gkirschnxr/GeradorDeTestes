@@ -1,15 +1,20 @@
 ﻿using GeradorDeTestes.Dominio.Compartilhado;
+using GeradorDeTestes.Dominio.ModuloDisciplina;
+using GeradorDeTestes.Dominio.ModuloQuestoes;
+using GeradorDeTestes.Dominio.ModuloTeste;
 
 namespace GeradorDeTestes.Dominio.ModuloMateria;
 public class Materia : EntidadeBase<Materia>
 {
     public string Nome { get; set; } = string.Empty;
-    public TipoDisciplina Disciplina { get; set; }
+    public Disciplina? Disciplina { get; set; }
     public Serie Serie { get; set; }
+    public List<Questao>? Questoes { get; set; }
+    public List<Teste>? Testes { get; set; }
 
     public Materia() { }
 
-    public Materia(string nome, TipoDisciplina disciplina, Serie serie) {
+    public Materia(string nome, Disciplina disciplina, Serie serie) {
         Id = Guid.NewGuid();
         Nome = nome;
         Disciplina = disciplina;
