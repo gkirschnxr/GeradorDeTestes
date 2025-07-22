@@ -36,7 +36,7 @@ namespace GeradorDeTestes.WebApp.Models
             string enunciado, 
             bool correta,
             List<AlternativaQuestao> alternativas,
-            List<Materia> materias
+            Materia materias
             )
         {
             Id = id;

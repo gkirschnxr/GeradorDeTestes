@@ -1,4 +1,5 @@
-﻿using GeradorDeTestes.Dominio.ModuloMateria;
+﻿using GeradorDeTestes.Dominio.ModuloDisciplina;
+using GeradorDeTestes.Dominio.ModuloMateria;
 using GeradorDeTestes.WebApp.Extensions;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,7 +13,7 @@ public class FormularioMateriaViewModel
     public string Nome { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "O campo \"Disciplina\" é obrigatório.")]
-    public Disciplina Disciplina { get; set; }
+    public Disciplina? Disciplina { get; set; }
 
     [Required(ErrorMessage = "O campo \"Série\" é obrigatório.")]
     public Serie Serie { get; set; }

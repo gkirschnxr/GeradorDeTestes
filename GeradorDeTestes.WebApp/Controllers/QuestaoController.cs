@@ -63,7 +63,7 @@ namespace GeradorDeTestes.WebApp.Controllers
                 registroSelecionado.Enunciado,
                 registroSelecionado.FoiAcertada,
                 registroSelecionado.Alternativas,
-                registroSelecionado.Materia
+                registroSelecionado.Materias
             );
 
             return View(editarVM);
