@@ -35,14 +35,14 @@ namespace GeradorDeTestes.WebApp.Controllers
             return View(visualizarVM);
         }
 
-        [HttpGet("cadastrar")]
-        [ValidateAntiForgeryToken]
+        [HttpGet("cadastrar")]        
         public IActionResult Cadastrar()
         {
             return View(new CadastrarQuestaoViewModel());
         }
 
         [HttpPost("cadastrar")]
+        [ValidateAntiForgeryToken]
         public IActionResult Cadastrar(CadastrarQuestaoViewModel cadastrarVM) 
         {
             var registros = repositorioQuestao.SelecionarRegistros();
@@ -114,6 +114,7 @@ namespace GeradorDeTestes.WebApp.Controllers
         }
 
         [HttpPost("editar/{id:guid}")]
+        [ValidateAntiForgeryToken]
         public IActionResult Editar(Guid id, EditarQuestaoViewModel editarVM)
         {
             var registros = repositorioQuestao.SelecionarRegistros();
@@ -138,6 +139,7 @@ namespace GeradorDeTestes.WebApp.Controllers
         }
 
         [HttpPost("excluir/{id:guid}")]
+        [ValidateAntiForgeryToken]
         public IActionResult ExcluirConfirmado(Guid id)
         {
             repositorioQuestao.ExcluirRegistro(id);

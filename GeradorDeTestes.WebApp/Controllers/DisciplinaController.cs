@@ -1,4 +1,5 @@
 ﻿using GeradorDeTestes.Dominio.ModuloDisciplina;
+using GeradorDeTestes.Infraestrutura.Orm.Compartilhado;
 using GeradorDeTestes.WebApp.Extensions;
 using GeradorDeTestes.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -8,12 +9,12 @@ namespace GeradorDeTestes.WebApp.Controllers
     [Route("disciplinas")]
     public class DisciplinaController : Controller
     {
-        
+        private readonly GeradorDeTestesDbContext contexto;
         private readonly IRepositorioDisciplina repositorioDisciplina;
 
-        public DisciplinaController(IRepositorioDisciplina repositorioDisciplina)
-        {
+        public DisciplinaController(IRepositorioDisciplina repositorioDisciplina, GeradorDeTestesDbContext contexto) {
             this.repositorioDisciplina = repositorioDisciplina;
+            this.contexto = contexto;
         }
 
         [HttpGet]
@@ -54,7 +55,20 @@ namespace GeradorDeTestes.WebApp.Controllers
 
             var entidade = cadastrarVM.ParaEntidade();
 
-            repositorioDisciplina.CadastrarRegistro(entidade);
+            var transacao = contexto.Database.BeginTransaction();
+
+            try {
+                repositorioDisciplina.CadastrarRegistro(entidade);
+
+                contexto.SaveChanges();
+
+                transacao.Commit();
+
+            } catch (Exception) {
+                transacao.Rollback();
+
+                throw;
+            }
 
             return RedirectToAction(nameof(Index));
         }
@@ -92,7 +106,20 @@ namespace GeradorDeTestes.WebApp.Controllers
 
             var entidadeEditada = editarVM.ParaEntidade();
 
-            repositorioDisciplina.EditarRegistro(id, entidadeEditada);
+            var transacao = contexto.Database.BeginTransaction();
+
+            try {
+                repositorioDisciplina.EditarRegistro(id, entidadeEditada);
+
+                contexto.SaveChanges();
+
+                transacao.Commit();
+
+            } catch (Exception) {
+                transacao.Rollback();
+
+                throw;
+            }
 
             return RedirectToAction(nameof(Index));
         }
@@ -111,7 +138,20 @@ namespace GeradorDeTestes.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ExcluirConfirmado(Guid id)
         {
-            repositorioDisciplina.ExcluirRegistro(id);
+            var transacao = contexto.Database.BeginTransaction();
+
+            try {
+                repositorioDisciplina.ExcluirRegistro(id);
+
+                contexto.SaveChanges();
+
+                transacao.Commit();
+
+            } catch (Exception) {
+                transacao.Rollback();
+
+                throw;
+            }
 
             return RedirectToAction(nameof(Index));
         }
