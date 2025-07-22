@@ -21,7 +21,7 @@ public class MapeadorMateriaEmOrm : IEntityTypeConfiguration<Materia>
             .WithMany(d => d.Materias);
 
         builder.HasMany(m => m.Questoes)
-            .WithOne(q => q.Materia);
+            .WithOne(q => q.Materias);
 
         builder.HasMany(m => m.Testes)
             .WithOne(t => t.Materia);

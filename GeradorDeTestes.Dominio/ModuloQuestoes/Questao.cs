@@ -7,7 +7,7 @@ namespace GeradorDeTestes.Dominio.ModuloQuestoes
     {
         public string Enunciado { get; set; } = string.Empty;
         public List<AlternativaQuestao>? Alternativas { get; set; }
-        public Materia? Materia { get; set; } 
+        public Materia? Materias { get; set; } 
         public bool FoiAcertada { get; set; }
 
         public Questao()
