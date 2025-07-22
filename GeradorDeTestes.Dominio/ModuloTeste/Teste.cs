@@ -6,7 +6,7 @@ namespace GeradorDeTestes.Dominio.ModuloTeste;
 public class Teste : EntidadeBase<Teste>
 {
     public string Titulo { get; set; } = string.Empty;
-    public Disciplina? Disciplina { get; set; }
+    public ModuloDisciplina.Disciplina? Disciplina { get; set; }
     public Materia? Materia { get; set; }
     public Serie Serie { get; set; }
     public int QuantidadeQuestoes { get; set; }
@@ -14,7 +14,7 @@ public class Teste : EntidadeBase<Teste>
 
     public Teste() { }
 
-    public Teste(string titulo, Disciplina disciplina, Materia? materia, Serie serie, int quantidadeQuestoes, TipoTeste tipoTeste) {
+    public Teste(string titulo, ModuloDisciplina.Disciplina disciplina, Materia? materia, Serie serie, int quantidadeQuestoes, TipoTeste tipoTeste) {
         Titulo = titulo;
         Disciplina = disciplina;
         Materia = materia;

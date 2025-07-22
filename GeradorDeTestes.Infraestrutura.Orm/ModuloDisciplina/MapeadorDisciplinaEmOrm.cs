@@ -1,12 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GeradorDeTestes.Dominio.ModuloDisciplina;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace GeradorDeTestes.Infraestrutura.Orm.ModuloDisciplina
+namespace GeradorDeTestes.Infraestrutura.Orm.ModuloDisciplina;
+public class MapeadorDisciplinaEmOrm : IEntityTypeConfiguration<Disciplina>
 {
-    class MapeadorDisciplinaEmOrm
-    {
+    public void Configure(EntityTypeBuilder<Disciplina> builder) {
+        builder.Property(d => d.Id)
+            .ValueGeneratedNever()
+            .IsRequired();
+
+        builder.Property(d => d.Nome)
+            .IsRequired();
+
+        builder.HasMany(d => d.Materias)
+            .WithOne(m => m.Disciplina)
+            .IsRequired();
+
+        builder.HasMany(d => d.Testes)
+            .WithOne(t => t.Disciplina);
     }
 }
