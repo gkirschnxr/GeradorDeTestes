@@ -63,7 +63,7 @@
                         </button>
                     </div>
 
-                    @if (Model.QuestoesSorteadas != null && Model.QuestoesSorteadas.Any()) {
+                    @(Model.QuestoesSorteadas != null && Model.QuestoesSorteadas.Any()) {
                         <div class="mt-5">
                             <h5>Questões Sorteadas:</h5>
                             <ul class="list-group">
@@ -94,13 +94,6 @@
                             @Html.CheckBoxFor(x => x.TipoTeste, new { @class = "form-check-input" })
                             <label asp-for="TipoTeste" class="form-check-label">Teste de Recuperacão</label>
                         </div>
-
-                    } else if (Model.QuantidadeQuestoes > 0 && Model.QuestoesSorteadas != null) {
-                        <div class="alert alert-warning mt-4">
-                            Nenhuma questão disponível para os filtros selecionados.
-                        </div>
-                    }
-
                 </form>
             </div>
         </div>
