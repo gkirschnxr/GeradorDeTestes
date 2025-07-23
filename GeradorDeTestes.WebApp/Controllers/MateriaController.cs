@@ -1,8 +1,10 @@
-﻿using GeradorDeTestes.Dominio.ModuloMateria;
+﻿using GeradorDeTestes.Dominio.ModuloDisciplina;
+using GeradorDeTestes.Dominio.ModuloMateria;
 using GeradorDeTestes.Infraestrutura.Orm.Compartilhado;
 using GeradorDeTestes.WebApp.Extensions;
 using GeradorDeTestes.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GeradorDeTestes.WebApp.Controllers;
 
@@ -11,10 +13,13 @@ public class MateriaController : Controller
 {
     private readonly GeradorDeTestesDbContext _contexto;
     private readonly IRepositorioMateria _repositorioMateria;
+    private readonly IRepositorioDisciplina _repositorioDisciplina;
 
-    public MateriaController(GeradorDeTestesDbContext contexto, IRepositorioMateria repositorioMateria) {
+    public MateriaController(GeradorDeTestesDbContext contexto, IRepositorioMateria repositorioMateria,
+                            IRepositorioDisciplina repositorioDisciplina) {
         _contexto = contexto;
         _repositorioMateria = repositorioMateria;
+        _repositorioDisciplina = repositorioDisciplina;
     }
 
 
@@ -30,7 +35,9 @@ public class MateriaController : Controller
 
     [HttpGet("cadastrar")]
     public IActionResult Cadastrar() {
-        var cadastrarVM = new CadastrarMateriaViewModel();
+        var disciplinasDisponiveis = _repositorioDisciplina.SelecionarRegistros();        
+
+        var cadastrarVM = new CadastrarMateriaViewModel(disciplinasDisponiveis);
 
         return View(cadastrarVM);
     }
@@ -39,7 +46,20 @@ public class MateriaController : Controller
     [HttpPost("cadastrar")]
     [ValidateAntiForgeryToken]
     public IActionResult Cadastrar(CadastrarMateriaViewModel cadastrarVM) {
-        var registro = cadastrarVM.ParaEntidade();
+        var disciplinasDisponiveis = _repositorioDisciplina.SelecionarRegistros();
+
+        if (!ModelState.IsValid) {
+
+            foreach (var dD in disciplinasDisponiveis) {
+                var selecionarVM = new SelectListItem(dD.Nome, dD.Id.ToString());
+
+                cadastrarVM.DisciplinasDisponiveis!.Add(selecionarVM);
+            }
+
+            return View(cadastrarVM);
+        }
+
+        var registro = cadastrarVM.ParaEntidade(disciplinasDisponiveis);
 
         var transacao = _contexto.Database.BeginTransaction();
 
@@ -62,9 +82,13 @@ public class MateriaController : Controller
 
     [HttpGet("editar/{id:guid}")]
     public IActionResult Editar(Guid id) {
-        var registro = _repositorioMateria.SelecionarRegistroPorId(id);
+        var disciplinasDisponiveis = _repositorioDisciplina.SelecionarRegistros();
 
-        var editarVM = new EditarMateriaViewModel(id, registro!.Nome, registro.Disciplina, registro.Serie);
+        var registroSelecionado = _repositorioMateria.SelecionarRegistroPorId(id);
+
+        if (registroSelecionado != null) return RedirectToAction(nameof(Index));
+
+        var editarVM = new EditarMateriaViewModel(id, registroSelecionado!.Nome, registroSelecionado.Disciplina!.Id, disciplinasDisponiveis, registroSelecionado.Serie);
 
         return View(editarVM);
     }
@@ -73,9 +97,20 @@ public class MateriaController : Controller
     [HttpPost("editar/{id:guid}")]
     [ValidateAntiForgeryToken]
     public IActionResult Editar(Guid id, EditarMateriaViewModel editarVM) {
-        var registros = _repositorioMateria.SelecionarRegistros();
+        var disciplinasDisponiveis = _repositorioDisciplina.SelecionarRegistros();
 
-        var registroEditado = editarVM.ParaEntidade();
+        if (!ModelState.IsValid) {
+
+            foreach (var dD in disciplinasDisponiveis) {
+                var selecionarVM = new SelectListItem(dD.Nome, dD.Id.ToString());
+
+                editarVM.DisciplinasDisponiveis!.Add(selecionarVM);
+            }
+
+            return View(editarVM);
+        }
+
+        var registroEditado = editarVM.ParaEntidade(disciplinasDisponiveis);
 
         var transacao = _contexto.Database.BeginTransaction();
 
@@ -132,7 +167,7 @@ public class MateriaController : Controller
     public IActionResult Detalhes(Guid id) {
         var registro = _repositorioMateria.SelecionarRegistroPorId(id);
 
-        var detalhesVM = new DetalhesMateriasViewModel(id, registro!.Nome, registro.Disciplina, registro.Serie);
+        var detalhesVM = new DetalhesMateriasViewModel(id, registro!.Nome, registro.Disciplina.Nome, registro.Serie);
 
         return View(detalhesVM);
     }

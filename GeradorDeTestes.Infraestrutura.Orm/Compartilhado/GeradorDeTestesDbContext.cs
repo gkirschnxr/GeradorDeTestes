@@ -1,6 +1,7 @@
 ﻿using GeradorDeTestes.Dominio.ModuloQuestoes;
 using GeradorDeTestes.Dominio.ModuloMateria;
 using Microsoft.EntityFrameworkCore;
+using GeradorDeTestes.Dominio.ModuloDisciplina;
 
 namespace GeradorDeTestes.Infraestrutura.Orm.Compartilhado
 {

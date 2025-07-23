@@ -7,7 +7,7 @@ namespace GeradorDeTestes.Dominio.ModuloMateria;
 public class Materia : EntidadeBase<Materia>
 {
     public string Nome { get; set; } = string.Empty;
-    public Disciplina? Disciplina { get; set; }
+    public Disciplina Disciplina { get; set; }
     public Serie Serie { get; set; }
     public List<Questao>? Questoes { get; set; }
     public List<Teste>? Testes { get; set; }

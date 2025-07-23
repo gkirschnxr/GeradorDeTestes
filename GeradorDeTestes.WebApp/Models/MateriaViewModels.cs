@@ -1,6 +1,8 @@
 ﻿using GeradorDeTestes.Dominio.ModuloDisciplina;
 using GeradorDeTestes.Dominio.ModuloMateria;
 using GeradorDeTestes.WebApp.Extensions;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace GeradorDeTestes.WebApp.Models;
@@ -13,7 +15,8 @@ public class FormularioMateriaViewModel
     public string Nome { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "O campo \"Disciplina\" é obrigatório.")]
-    public Disciplina? Disciplina { get; set; }
+    public Guid? DisciplinaId { get; set; }
+    public List<SelectListItem>? DisciplinasDisponiveis { get; set; }
 
     [Required(ErrorMessage = "O campo \"Série\" é obrigatório.")]
     public Serie Serie { get; set; }
@@ -21,11 +24,15 @@ public class FormularioMateriaViewModel
 
 public class CadastrarMateriaViewModel : FormularioMateriaViewModel
 {
-    public CadastrarMateriaViewModel() { }
-    public CadastrarMateriaViewModel(string nome, Disciplina disciplina, Serie serie) : this() {
-        Nome = nome;
-        Disciplina = disciplina;
-        Serie = serie;
+    public CadastrarMateriaViewModel() { 
+        DisciplinasDisponiveis = new List<SelectListItem>();
+    }
+    public CadastrarMateriaViewModel(List<Disciplina> disciplinas) : this() {
+        foreach (var d in disciplinas) {
+            var selecionarVM = new SelectListItem(d.Nome, d.Id.ToString());
+
+            DisciplinasDisponiveis?.Add(selecionarVM);
+        }
     }
 }
 
@@ -33,11 +40,20 @@ public class EditarMateriaViewModel : FormularioMateriaViewModel
 {
     public Guid Id { get; set; }
 
-    public EditarMateriaViewModel() { }
-    public EditarMateriaViewModel(Guid id, string nome, Disciplina disciplina, Serie serie) : this() {
+    public EditarMateriaViewModel() {
+        DisciplinasDisponiveis = new List<SelectListItem>();
+    }
+    public EditarMateriaViewModel(Guid id, string nome, Guid? disciplinaId, List<Disciplina> disciplinas, Serie serie) : this() {
         Id = id;
         Nome = nome;
-        Disciplina = disciplina;
+        DisciplinaId = disciplinaId;
+
+        foreach (var d in disciplinas) {
+            var selecionarVM = new SelectListItem(d.Nome, d.Id.ToString());
+
+            DisciplinasDisponiveis?.Add(selecionarVM);
+        }
+
         Serie = serie;
     }
 }
@@ -45,10 +61,9 @@ public class EditarMateriaViewModel : FormularioMateriaViewModel
 public class ExcluirMateriaViewModel 
 {
     public Guid Id { get; set; }
-    public string Nome { get; set; } = string.Empty;
+    public string Nome { get; set; }
 
-    public ExcluirMateriaViewModel() { }
-    public ExcluirMateriaViewModel(Guid id, string nome) : this() {
+    public ExcluirMateriaViewModel(Guid id, string nome) {
         Id = id;
         Nome = nome;
     }
@@ -71,10 +86,10 @@ public class DetalhesMateriasViewModel
 {
     public Guid Id { get; set; }
     public string Nome { get; set; }
-    public Disciplina Disciplina { get; set; }
+    public string Disciplina { get; set; }
     public Serie Serie { get; set; }
 
-    public DetalhesMateriasViewModel(Guid id, string nome, Disciplina disciplina, Serie serie) {
+    public DetalhesMateriasViewModel(Guid id, string nome, string disciplina, Serie serie) {
         Id = id;
         Nome = nome;
         Disciplina = disciplina;

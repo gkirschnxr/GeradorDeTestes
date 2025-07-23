@@ -58,7 +58,7 @@ namespace GeradorDeTestes.WebApp.Controllers
 
                 transacao.Commit();
             }
-            catch (Exception ex) 
+            catch (Exception) 
             {
                     transacao.Rollback();
 
@@ -133,7 +133,7 @@ namespace GeradorDeTestes.WebApp.Controllers
         {
             var registroSelecionado = repositorioQuestao.SelecionarRegistroPorId(id);
 
-            var excluirVM = new ExcluirQuestaoViewModel(registroSelecionado.Id, registroSelecionado.Enunciado);
+            var excluirVM = new ExcluirQuestaoViewModel(registroSelecionado!.Id, registroSelecionado.Enunciado);
 
             return View(excluirVM);
         }
