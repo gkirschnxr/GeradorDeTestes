@@ -161,10 +161,13 @@ namespace GeradorDeTestes.WebApp.Controllers
         {
             var registroSelecionado = repositorioDisciplina.SelecionarRegistroPorId(id);
 
+            if (registroSelecionado is null)
+                return RedirectToAction(nameof(Index));
+
             var detalhesVM = new DetalhesDisciplinaViewModel(
                 id,
-                registroSelecionado!.Nome
-                //registroSelecionado.Materia
+                registroSelecionado!.Nome,
+                registroSelecionado.Materias
             );
 
             return View(detalhesVM);

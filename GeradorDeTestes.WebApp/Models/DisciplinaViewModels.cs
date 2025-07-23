@@ -1,4 +1,5 @@
 ﻿using GeradorDeTestes.Dominio.ModuloDisciplina;
+using GeradorDeTestes.Dominio.ModuloMateria;
 using GeradorDeTestes.WebApp.Extensions;
 using System.ComponentModel.DataAnnotations;
 
@@ -64,27 +65,13 @@ namespace GeradorDeTestes.WebApp.Models
     {
         public Guid Id { get; set; }
         public string Nome { get; set; }
-        //public List<DetalhesMateriasViewModel> Materia { get; set; }
-        public decimal TotalDespesas { get; set; }
+        public List<string> Materias { get; set; }
 
-        public DetalhesDisciplinaViewModel(Guid id, string nome)//, List<Materia> materias)
+        public DetalhesDisciplinaViewModel(Guid id, string nome, List<Materia> materias)
         {
             Id = id;
             Nome = nome;
-
-          //  Materias = new List<DetalhesMateriasViewModel>();
-
-          //  foreach (var d in materias)
-          //  {
-          //      TotalDespesas += d.materias;
-
-        //        var detalhesDespesaVM = new DetalhesMateriasViewModel(
-        //            d.Id,
-        //            d.Materias
-       //         );
-
-      //          Materias.Add(detalhesDespesaVM);
-       //     }
+            Materias = materias.Select(m => m.Nome).ToList();
         }
     }
 }

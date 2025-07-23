@@ -1,4 +1,4 @@
-﻿@* @using GeradorDeTestes.WebApp.Models
+﻿﻿
 @model DetalhesDisciplinaViewModel
 
 @{
@@ -19,36 +19,32 @@
                     <input name="Nome" class="form-control" value="@Model.Nome" readonly disabled />
                 </div>
 
-                @if (Model.Materia.Count > 0)
+                @if (Model.Materias.Count > 0)
                 {
-                    <label for="Materias" class="control-label fs-5 mt-4">Materias:</label>
+                    <label for="Materias" class="control-label fs-5 mt-4">Matérias:</label>
 
                     <table class="table table-sm table-striped mt-2">
                         <thead>
                             <tr>
-                                <th>Id</th>
-                                <th>Materias</th>
+                                <th>Nome</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var d in Model.Materias)
+                            @foreach (var m in Model.Materias)
                             {
                                 <tr>
-                                    <td>@d.Id</td>
-                                    <td>@d.Materias</td>
+                                    <td>@m</td>
                                 </tr>
                             }
                         </tbody>
                     </table>
-
-                   <p for="Materias" class="control-label fs-5 text-end mt-3"><strong>Materias:</strong> @Model.Materias</p>
                 }
 
                 <div class="form-group d-flex align-items-center justify-content-end gap-3 mt-5">
-                    <a href="/disciplinas">Voltar para a listagem</a>
+                    <a asp-action="Index">Voltar para a listagem</a>
                 </div>
             </div>
         </div>
 
     </div>
-</div> *@
+</div>
