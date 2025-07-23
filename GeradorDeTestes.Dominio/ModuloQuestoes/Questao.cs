@@ -1,5 +1,6 @@
 ﻿using GeradorDeTestes.Dominio.Compartilhado;
 using GeradorDeTestes.Dominio.ModuloMateria;
+using GeradorDeTestes.Dominio.ModuloTeste;
 
 namespace GeradorDeTestes.Dominio.ModuloQuestoes
 {
@@ -9,10 +10,12 @@ namespace GeradorDeTestes.Dominio.ModuloQuestoes
         public List<AlternativaQuestao>? Alternativas { get; set; }
         public Materia? Materias { get; set; } 
         public bool FoiAcertada { get; set; }
+        public List<Teste> Testes { get; set; }
 
         public Questao()
         {
             Alternativas = new List<AlternativaQuestao>();
+            Testes = new List<Teste>();
         }
 
         public Questao(string enunciado, bool correta) : this()

@@ -72,7 +72,7 @@ namespace GeradorDeTestes.Infraestrutura.Orm.Migrations
                     MateriaId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Serie = table.Column<int>(type: "int", nullable: false),
                     QuantidadeQuestoes = table.Column<int>(type: "int", nullable: false),
-                    TipoTeste = table.Column<int>(type: "int", nullable: false)
+                    TipoTeste = table.Column<int>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
