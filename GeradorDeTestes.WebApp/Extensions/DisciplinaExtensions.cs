@@ -14,8 +14,8 @@ namespace GeradorDeTestes.WebApp.Extensions
         {
             return new DetalhesDisciplinaViewModel(
                     disciplina.Id,
-                    disciplina.Nome
-                    //disciplina.Materia
+                    disciplina.Nome,
+                    disciplina.Materias
             );
         }
     }

@@ -11,11 +11,11 @@ public class FormularioTesteViewModel
 {
     public FormularioTesteViewModel() { }
 
-    public FormularioTesteViewModel(string titulo, Serie serie, TipoTeste tipoTeste, int quantidadeQuestoes, Guid? disciplinaId,
+    public FormularioTesteViewModel(string titulo, Serie serie, bool TipoTeste, int quantidadeQuestoes, Guid? disciplinaId,
                                     Disciplina? disciplina, List<Disciplina>? disciplinas, Guid? materiaId, Materia? materia, List<Materia>? materias) {
         Titulo = titulo;
         Serie = serie;
-        TipoTeste = tipoTeste;
+        TipoTeste = TipoTeste;
         QuantidadeQuestoes = quantidadeQuestoes;
         DisciplinaId = disciplinaId;
         Disciplina = disciplina;
@@ -34,7 +34,7 @@ public class FormularioTesteViewModel
     public Serie Serie { get; set; }
 
     [Required(ErrorMessage = "O campo \"Tipo de Teste\" é obrigatório.")]
-    public TipoTeste TipoTeste { get; set; }
+    public bool TipoTeste { get; set; }
 
     [Required(ErrorMessage = "O campo \"Quantidade de Questões\" é obrigatório.")]
     [Range(1, 15, ErrorMessage = "A quantidade de questões deve estar entre 1 e 15.")]
@@ -56,7 +56,7 @@ public class GerarTesteViewModel : FormularioTesteViewModel
 {
     public GerarTesteViewModel() { }
 
-    public GerarTesteViewModel(string titulo, Serie serie, TipoTeste tipoTeste, int quantidadeQuestoes, Guid? disciplinaId,
+    public GerarTesteViewModel(string titulo, Serie serie, bool TipoTeste, int quantidadeQuestoes, Guid? disciplinaId,
                                Disciplina? disciplina, List<Disciplina>? disciplinas, Guid? materiaId, Materia? materia, List<Materia>? materias)
         : base() { }
 }
@@ -72,18 +72,18 @@ public class VisualizarTestesViewModel {
     }
 }
 
-public class DetalhesTesteViewModel
-{
+public class DetalhesTesteViewModel {
     public Guid Id { get; set; }
-    public string Titulo { get; set; }
-    public string Disciplina { get; set; }
-    public string Materia { get; set; }
+    public string Titulo { get; set; } = string.Empty;
+    public string Disciplina { get; set; } = string.Empty;
+    public string Materia { get; set; } = string.Empty;
     public Serie Serie { get; set; }
-    public TipoTeste TipoTeste { get; set; }
+    public bool TipoTeste { get; set; }
     public int QuantidadeQuestoes { get; set; }
+    public List<Questao>? QuestoesSorteadas { get; set; }
 
-    public DetalhesTesteViewModel(Guid id, string titulo, string disciplina, string materia, Serie serie, 
-                                 TipoTeste tipoTeste, int quantidadeQuestoes) {
+    public DetalhesTesteViewModel(Guid id, string titulo, string disciplina, string materia,
+                                 Serie serie, bool tipoTeste, int quantidadeQuestoes) {
         Id = id;
         Titulo = titulo;
         Disciplina = disciplina;
@@ -93,3 +93,35 @@ public class DetalhesTesteViewModel
         QuantidadeQuestoes = quantidadeQuestoes;
     }
 }
+
+public class DuplicarTesteViewModel : FormularioTesteViewModel
+{
+    public Guid IdTeste { get; set; }
+
+    public DuplicarTesteViewModel() { }
+
+    public DuplicarTesteViewModel(Teste teste) {
+        IdTeste = teste.Id;
+        Titulo = teste.Titulo;
+        Serie = teste.Serie;
+        TipoTeste = teste.TipoTeste;
+        QuantidadeQuestoes = teste.QuantidadeQuestoes;
+        DisciplinaId = teste.Disciplina?.Id;
+        Disciplina = teste.Disciplina;
+        MateriaId = teste.Materia?.Id;
+        Materia = teste.Materia;
+    }
+}
+
+public class ExcluirTesteViewModel
+{
+    public Guid Id { get; set; }
+    public string Titulo { get; set; } = string.Empty;
+
+    public ExcluirTesteViewModel() { }
+    public ExcluirTesteViewModel(Guid id, string titulo) : this() {
+        Id = id;
+        Titulo = titulo;
+    }
+}
+

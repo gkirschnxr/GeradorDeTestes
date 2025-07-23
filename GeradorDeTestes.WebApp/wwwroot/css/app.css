@@ -7,11 +7,6 @@ body {
     color: #f1f1f1;
 }
 
-.container {
-    display: flex;
-    flex-wrap: initial;
-}
-
 .navbar, .navbar-nav, .navbar-brand, .nav-link {
     background-color: #23272b !important;
     color: #f1f1f1 !important;

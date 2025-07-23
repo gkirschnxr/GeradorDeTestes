@@ -122,7 +122,7 @@ namespace GeradorDeTestes.Infraestrutura.Orm.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("TipoTeste")
-                        .HasColumnType("int");
+                        .HasColumnType("bit");
 
                     b.Property<string>("Titulo")
                         .IsRequired()

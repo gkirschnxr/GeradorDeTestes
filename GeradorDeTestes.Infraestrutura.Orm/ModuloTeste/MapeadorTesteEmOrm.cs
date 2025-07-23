@@ -15,23 +15,24 @@ public class MapeadorTesteEmOrm : IEntityTypeConfiguration<Teste>
                 .HasMaxLength(200)
                 .IsRequired();
 
-        builder.Property(t => t.Titulo)
-                .IsRequired();
-
-        builder.Property(t => t.QuantidadeQuestoes)
-                .IsRequired();
-
-        builder.Property(t => t.Serie)
-                .IsRequired();
-
-        builder.Property(t => t.TipoTeste)
-                .IsRequired();
-
         builder.HasOne(t => t.Disciplina)
                 .WithMany(d => d.Testes)
                 .IsRequired();
 
         builder.HasOne(t => t.Materia)
-                .WithMany(m => m.Testes);
+                .WithMany(m => m.Testes)
+                .IsRequired(false);
+
+        builder.Property(t => t.Serie)
+                .IsRequired();
+
+        builder.Property(t => t.QuantidadeQuestoes)
+                .IsRequired();
+
+        builder.Property(t => t.TipoTeste)
+                .IsRequired();
+
+        builder.HasMany(t => t.Questoes)
+                .WithMany(q => q.Testes);
     }
 }

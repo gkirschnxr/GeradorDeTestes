@@ -198,7 +198,7 @@ namespace GeradorDeTestes.WebApp.Controllers
         {
             var registroSelecionado = repositorioQuestao.SelecionarRegistroPorId(id);
 
-            var excluirVM = new ExcluirQuestaoViewModel(registroSelecionado.Id, registroSelecionado.Enunciado);
+            var excluirVM = new ExcluirQuestaoViewModel(registroSelecionado!.Id, registroSelecionado.Enunciado);
 
             return View(excluirVM);
         }

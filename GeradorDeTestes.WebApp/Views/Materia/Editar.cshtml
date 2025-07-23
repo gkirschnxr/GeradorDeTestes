@@ -23,9 +23,10 @@
                     </div>
 
                     <div class="form-group d-grid gap-2 mt-3">
-                        <label asp-for="Disciplina" class="control-label fs-5">Disciplina:</label>
-                        <select asp-for="Disciplina" id="inputDisciplina" class="form-select"></select>
-                        <span asp-validation-for="Disciplina" class="text-danger"></span>
+                        <label asp-for="DisciplinaId" class="control-label fs-5">Disciplina:</label>
+                        <select asp-for="DisciplinaId" asp-items="@Model.DisciplinasDisponiveis" class="form-select">
+                        </select>
+                        <span asp-validation-for="DisciplinaId" class="text-danger"></span>
                     </div>
 
                     <div class="form-group d-grid gap-2 mt-3">
@@ -33,14 +34,6 @@
                         <select asp-for="Serie" id="inputSerie" asp-items="@Html.GetEnumSelectList<Serie>()" class="form-select"></select>
                         <span asp-validation-for="Serie" class="text-danger"></span>
                     </div>
-
-                    @*                     <div class="form-group d-grid gap-2 mt-3">
-                        <label asp-for="ContatoId" class="control-label fs-5">Contato:</label>
-                        <select asp-for="ContatoId" asp-items="@Model.ContatosDisponiveis" class="form-select">
-                            <option value="">Nenhum contato selecionado</option>
-                        </select>
-                        <span asp-validation-for="ContatoId" class="text-danger"></span>
-                    </div> *@
 
                     <div class="form-group d-flex align-items-center justify-content-end gap-3 mt-5">
                         <a href="/materias">Voltar para a listagem</a>
