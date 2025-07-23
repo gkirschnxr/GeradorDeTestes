@@ -1,41 +1,49 @@
-﻿
-@model VisualizarDisciplinaViewModel
+﻿@model VisualizarDisciplinaViewModel
 
 @{
     Layout = "_Layout";
     ViewBag.Titulo = "Visualização de Disciplinas";
 }
 
-<p>
+<div class="container mt-4 mb-3">
     <a class="btn btn-primary px-4" href="/disciplinas/cadastrar">
-        <i class="bi bi-plus"></i>
-        Cadastrar Novo/a
+        <i class="bi bi-plus"></i> Cadastrar Novo/a
     </a>
-</p>
+</div>
 
 <hr />
 
-<div class="d-flex flex-wrap gap-2">
-    @foreach (var item in Model.Registros)
-    {
-        <div class="col-12 col-md-3">
-            <div class="card border-0">
-                <div class="card-body">
-                    <h5 class="card-title">@item.Nome</h5>
+<div class="container mt-3">
+    <div class="d-flex flex-column gap-3">
+        @foreach (var disciplina in Model.Registros) {
+            <div class="card text-white bg-dark p-3">
+                <div class="d-flex justify-content-between align-items-start flex-wrap">
 
-                    <span class="d-flex gap-1 justify-content-end mt-4">
-                        <a href="/disciplinas/detalhes/@item.Id" class="btn btn-secondary rounded-circle opcao-card">
-                            <i class="bi bi-search"></i>
+                    <!-- Nome e quantidade de matérias -->
+                    <div class="d-flex flex-wrap align-items-center">
+                        <h5 class="mb-0 me-3">@disciplina.Nome</h5>
+                    </div>
+
+                    <div class="align-items-end">
+                        <span>Matérias: @disciplina.Materias.Count</span>
+                    </div>
+
+                    <!-- Botões alinhados à direita e um abaixo do outro -->
+                    <div class="d-flex d-inline-flex align-items-end gap-2">
+                        <a asp-action="Detalhes" asp-route-id="@disciplina.Id" class="btn btn-outline-light btn-sm" title="Visualizar">
+                            <i class="bi bi-search"></i> Visualizar
                         </a>
-                        <a href="/disciplinas/editar/@item.Id" class="btn btn-primary rounded-circle opcao-card">
-                            <i class="bi bi-pencil-square"></i>
+                        <a asp-action="Editar" asp-route-id="@disciplina.Id" class="btn btn-outline-light btn-sm" title="Editar">
+                            <i class="bi bi-pencil"></i> Editar
                         </a>
-                        <a href="/disciplinas/excluir/@item.Id" class="btn btn-danger rounded-circle opcao-card">
-                            <i class="bi bi-trash"></i>
+                        <a asp-action="Excluir" asp-route-id="@disciplina.Id" class="btn btn-outline-danger btn-sm" title="Excluir">
+                            <i class="bi bi-trash"></i> Excluir
                         </a>
-                    </span>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 </div>
+
+

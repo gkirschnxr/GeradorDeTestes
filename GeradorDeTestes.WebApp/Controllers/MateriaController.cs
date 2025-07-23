@@ -86,7 +86,7 @@ public class MateriaController : Controller
 
         var registroSelecionado = _repositorioMateria.SelecionarRegistroPorId(id);
 
-        if (registroSelecionado != null) return RedirectToAction(nameof(Index));
+        if (registroSelecionado is null) return RedirectToAction(nameof(Index));
 
         var editarVM = new EditarMateriaViewModel(id, registroSelecionado!.Nome, registroSelecionado.Disciplina!.Id, disciplinasDisponiveis, registroSelecionado.Serie);
 
