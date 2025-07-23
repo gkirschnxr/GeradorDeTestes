@@ -30,4 +30,6 @@
     <None Include="wwwroot\lib\bootstrap-5.3.6-dist\css\.DS_Store" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties wwwroot_4lib_4bootstrap-5_13_16-dist_4js_4bootstrap_1bundle_1js_1map__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
 </Project>

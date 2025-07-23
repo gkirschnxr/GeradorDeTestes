@@ -1,22 +1,39 @@
-﻿using GeradorDeTestes.Dominio.ModuloQuestoes;
+﻿using GeradorDeTestes.Dominio.ModuloMateria;
+using GeradorDeTestes.Dominio.ModuloQuestoes;
 using GeradorDeTestes.WebApp.Models;
 
 namespace GeradorDeTestes.WebApp.Extensions
 {
     public static class QuestãoExtensions
     {
-        public static Questao ParaEntidade(this FormularioQuestaoViewModels formularioVM)
+        public static Questao ParaEntidade(CadastrarQuestaoViewModel viewModel, List<Materia> materias)
         {
-            return new Questao(formularioVM.Enunciado, formularioVM.Correta);
+            Materia? materia = materias.Find(i => i.Id.Equals(viewModel.MateriaId));
+
+            if (materia is null)
+                throw new InvalidOperationException("A matéria requisitada selecionada não foi encontrada.");
+
+            var questao = new Questao(viewModel.Enunciado ?? string.Empty, materia);
+
+            if (viewModel.AlternativasSelecionadas is not null)
+            {
+                foreach (var a in viewModel.AlternativasSelecionadas)
+                    questao.AdicionarAlternativa(a.Resposta, a.Correta);
+            }
+
+            return questao;
         }
 
-        public static DetalhesQuestaoViewModel ParaDetalhesVm(this Questao questao)
+        public static Questao ParaEntidade(EditarQuestaoViewModel viewModel, List<Materia> materias)
         {
-            return new DetalhesQuestaoViewModel(
-                questao.Id,
-                questao.Enunciado,
-                questao.FoiAcertada
-                );
+            Materia? materia = materias.Find(i => i.Id.Equals(viewModel.MateriaId));
+
+            if (materia is null)
+                throw new InvalidOperationException("A matéria requisitada selecionada não foi encontrada.");
+
+            var questao = new Questao(viewModel.Enunciado ?? string.Empty, materia);
+
+            return questao;
         }
     }
 }

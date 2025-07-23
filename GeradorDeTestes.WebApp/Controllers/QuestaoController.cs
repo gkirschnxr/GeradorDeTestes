@@ -15,15 +15,20 @@ namespace GeradorDeTestes.WebApp.Controllers
         private readonly GeradorDeTestesDbContext contexto;
         private readonly IRepositorioQuestao repositorioQuestao;
         private readonly IRepositorioMateria repositorioMateria;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly ILogger<QuestaoController> logger;
 
         public QuestaoController(
-            GeradorDeTestesDbContext contexto, 
-            IRepositorioQuestao repositorioQuestao, 
-            IRepositorioMateria repositorioMateria)
+        IRepositorioQuestao repositorioQuestao,
+        IRepositorioMateria repositorioMateria,
+        IUnitOfWork unitOfWork,
+        ILogger<QuestaoController> logger
+    )
         {
-            this.contexto = contexto;
             this.repositorioQuestao = repositorioQuestao;
             this.repositorioMateria = repositorioMateria;
+            this.unitOfWork = unitOfWork;
+            this.logger = logger;
         }
 
         public IActionResult Index()
@@ -38,7 +43,11 @@ namespace GeradorDeTestes.WebApp.Controllers
         [HttpGet("cadastrar")]        
         public IActionResult Cadastrar()
         {
-            return View(new CadastrarQuestaoViewModel());
+            var materias = repositorioMateria.SelecionarRegistros();
+
+            var cadastrarVM = new CadastrarQuestaoViewModel(materias);
+
+            return View(cadastrarVM);
         }
 
         [HttpPost("cadastrar")]
@@ -46,32 +55,53 @@ namespace GeradorDeTestes.WebApp.Controllers
         public IActionResult Cadastrar(CadastrarQuestaoViewModel cadastrarVM) 
         {
             var registros = repositorioQuestao.SelecionarRegistros();
+
             var materias = repositorioMateria.SelecionarRegistros();
 
-            var transacao = contexto.Database.BeginTransaction();
+            
+            if (registros.Any(i => i.Enunciado.Equals(cadastrarVM.Enunciado)))
+            {
+                ModelState.AddModelError(
+                    "CadastroUnico",
+                    "Já existe uma questão registrada com este enunciado."
+                );
+
+                cadastrarVM.MateriasDisponiveis = materias
+                    .Select(d => new SelectListItem(d.Nome, d.Id.ToString()))
+                    .ToList();
+
+                return View(cadastrarVM);
+            }
 
             try
             {
-                var entidade = cadastrarVM.ParaEntidade();
+                var entidade = CadastrarQuestaoViewModel.ParaEntidade(cadastrarVM, materias);
 
                 repositorioQuestao.CadastrarRegistro(entidade);
 
-                transacao.Commit();
+                unitOfWork.Commit();
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                    transacao.Rollback();
+                unitOfWork.Rollback();
 
-                throw;
+                logger.LogError(
+                    ex,
+                    "Ocorreu um erro durante o registro de {@ViewModel}.",
+                    cadastrarVM
+                );
             }
-            
+
             return RedirectToAction(nameof(Index));
         }
 
         [HttpPost("cadastrar/adicionar-alternativa")]
-        public IActionResult AdicionarAlternativa(CadastrarQuestaoViewModel cadastrarVM, AdicionarAlternativaQuestaoViewModel alternativaVM)
+        public IActionResult AdicionarAlternativa(
+            CadastrarQuestaoViewModel cadastrarVM, 
+            AdicionarAlternativaQuestaoViewModel alternativaVM)
         {
-            cadastrarVM.MateriasDisponiveis = repositorioMateria.SelecionarRegistros()
+            cadastrarVM.MateriasDisponiveis = repositorioMateria
+                .SelecionarRegistros()
                 .Select(m => new SelectListItem(m.Nome, m.Id.ToString()))
                 .ToList();
 
@@ -93,6 +123,7 @@ namespace GeradorDeTestes.WebApp.Controllers
                 .SelecionarRegistros()
                 .Select(m => new SelectListItem(m.Nome, m.Id.ToString()))
                 .ToList();
+            
 
             return View(nameof(Cadastrar), cadastrarVM);
         }
@@ -100,30 +131,64 @@ namespace GeradorDeTestes.WebApp.Controllers
         [HttpGet("editar/{id:guid}")]
         public IActionResult Editar(Guid id)
         {
-            var registroSelecionado = repositorioQuestao.SelecionarRegistroPorId(id);
+            var registro = repositorioQuestao.SelecionarRegistroPorId(id);
 
-            var editarVM = new EditarQuestaoViewModel(
-                id,
-                registroSelecionado!.Enunciado,
-                registroSelecionado.FoiAcertada,
-                registroSelecionado.Alternativas!,
-                registroSelecionado.Materias!
+            if (registro is null)
+                return RedirectToAction(nameof(Index));
+
+            var materias = repositorioMateria.SelecionarRegistros();
+
+            var editarVm = new EditarQuestaoViewModel(
+                registro.Id,
+                registro.Enunciado,
+                registro.Materias.Id,
+                registro.Alternativas,
+                materias
             );
 
-            return View(editarVM);
+            return View(editarVm);
         }
 
         [HttpPost("editar/{id:guid}")]
         [ValidateAntiForgeryToken]
-        public IActionResult Editar(Guid id, EditarQuestaoViewModel editarVM)
+        public IActionResult Editar(Guid id, EditarQuestaoViewModel editarVm)
         {
             var registros = repositorioQuestao.SelecionarRegistros();
 
-            var entidadeEditada = editarVM.ParaEntidade();
+            var materias = repositorioMateria.SelecionarRegistros();
 
-            repositorioQuestao.EditarRegistro(id, entidadeEditada);
+            if (registros.Any(i => !i.Id.Equals(id) && i.Enunciado.Equals(editarVm.Enunciado)))
+            {
+                ModelState.AddModelError(
+                    "CadastroUnico",
+                    "Já existe uma questão registrada com este enunciado."
+                );
 
-            contexto.SaveChanges();
+                editarVm.MateriasDisponiveis = materias
+                    .Select(d => new SelectListItem(d.Nome, d.Id.ToString()))
+                    .ToList();
+
+                return View(editarVm);
+            }
+
+            try
+            {
+                var entidadeEditada = EditarQuestaoViewModel.ParaEntidade(editarVm, materias);
+
+                repositorioQuestao.EditarRegistro(id, entidadeEditada);
+
+                unitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                unitOfWork.Rollback();
+
+                logger.LogError(
+                    ex,
+                    "Ocorreu um erro durante o registro de {@ViewModel}.",
+                    editarVm
+                );
+            }
 
             return RedirectToAction(nameof(Index));
         }

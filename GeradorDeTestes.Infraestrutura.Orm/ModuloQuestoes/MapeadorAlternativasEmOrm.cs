@@ -4,26 +4,24 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace GeradorDeTestes.Infraestrutura.Orm.ModuloQuestoes
 {
-    public class MapeadorAlternativasEmOrm : IEntityTypeConfiguration<AlternativaQuestao>
+    public class MapeadorAlternativasEmOrm : IEntityTypeConfiguration<Alternativa>
     {
-        public void Configure(EntityTypeBuilder<AlternativaQuestao> builder)
+        public void Configure(EntityTypeBuilder<Alternativa> builder)
         {
             builder.Property(x => x.Id)
                 .ValueGeneratedNever()
                 .IsRequired();
-
-            builder.Property(x => x.Texto)
+            builder.Property(a => a.Letra)
+           .IsRequired();
+            builder.Property(a => a.Resposta)
+                .HasMaxLength(200)
                 .IsRequired();
-
-            builder.Property(x => x.Correta)
+            builder.Property(a => a.Correta)
                 .IsRequired();
-
-            builder.Property(x => x.QuestaoId)
-                .IsRequired();
-
             builder.HasOne(a => a.Questao)
-                .WithMany(x => x.Alternativas)
+                .WithMany(q => q.Alternativas)
                 .IsRequired();
+
 
 
         }

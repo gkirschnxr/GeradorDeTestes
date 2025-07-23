@@ -4,32 +4,34 @@ using GeradorDeTestes.WebApp.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
-namespace GeradorDeTestes.WebApp.Models
-{
+namespace GeradorDeTestes.WebApp.Models;
+
     public class FormularioQuestaoViewModels
     {
         [Required(ErrorMessage = "O campo 'Enunciado' é obrigatório.")]
         [MinLength(2, ErrorMessage = "O campo 'Enunciado' precisa conter ao menos 2 caracteres.")]
-        public string Enunciado { get; set; } = string.Empty;
-        public bool Correta { get; set; }
-        public Guid MateriaId{ get; set; }
+        public string? Enunciado { get; set; }
+        public Guid MateriaId { get; set; }
         public List<SelectListItem> MateriasDisponiveis { get; set; } = new List<SelectListItem>();
         public List<AlternativaQuestaoViewModel> AlternativasSelecionadas { get; set; } = new List<AlternativaQuestaoViewModel>();
 
         public void AdicionarAlternativa(AdicionarAlternativaQuestaoViewModel alternativaVM)
         {
-            if (AlternativasSelecionadas == null)
-                AlternativasSelecionadas = new List<AlternativaQuestaoViewModel>();
+            var letra = (char)('A' + AlternativasSelecionadas.Count);
 
-            
-            char letra = (char)('A' + AlternativasSelecionadas.Count);
+            var novaAlternativa = new AlternativaQuestaoViewModel(
+                letra,
+                alternativaVM.Resposta,
+                alternativaVM.Correta);
 
-            var novaAlternativa = new AlternativaQuestaoViewModel(letra, alternativaVM.Resposta, alternativaVM.Correta);
             AlternativasSelecionadas.Add(novaAlternativa);
         }
 
         public void RemoverAlternativa(AlternativaQuestaoViewModel alternativaVm)
         {
+            if (!AlternativasSelecionadas.Contains(alternativaVm))
+                return;
+
             AlternativasSelecionadas?.Remove(alternativaVm);
             ReatribuirLetras();
         }
@@ -40,45 +42,80 @@ namespace GeradorDeTestes.WebApp.Models
                 return;
 
             for (int i = 0; i < AlternativasSelecionadas.Count; i++)
-            {
                 AlternativasSelecionadas[i].Letra = (char)('A' + i);
-            }
         }
     }
 
     public class CadastrarQuestaoViewModel : FormularioQuestaoViewModels
     {
-        public CadastrarQuestaoViewModel(){}
+        public CadastrarQuestaoViewModel() { }
 
-        public CadastrarQuestaoViewModel(string enunciado, bool correta)
+        public CadastrarQuestaoViewModel(List<Materia> materias)
         {
-            Enunciado = enunciado;
-            Correta = correta;
+            MateriasDisponiveis = materias
+                .Select(d => new SelectListItem(d.Nome, d.Id.ToString()))
+                .ToList();
         }
 
-        
+    public static Questao ParaEntidade(CadastrarQuestaoViewModel viewModel, List<Materia> materias)
+    {
+        Materia? materia = materias.Find(i => i.Id.Equals(viewModel.MateriaId));
+
+        if (materia is null)
+            throw new InvalidOperationException("A matéria requisitada selecionada não foi encontrada.");
+
+        var questao = new Questao(viewModel.Enunciado ?? string.Empty, materia);
+
+        if (viewModel.AlternativasSelecionadas is not null)
+        {
+            foreach (var a in viewModel.AlternativasSelecionadas)
+                questao.AdicionarAlternativa(a.Resposta, a.Correta);
+        }
+
+        return questao;
     }
+}
 
     public class EditarQuestaoViewModel : FormularioQuestaoViewModels
     {
         public Guid Id { get; set; }
-        public EditarQuestaoViewModel(){}
+        public EditarQuestaoViewModel() { }
         public EditarQuestaoViewModel(
-            Guid id, 
-            string enunciado, 
-            bool correta,
-            List<AlternativaQuestao> alternativas,
-            Materia materias
-            )
+            Guid id,
+            string enunciado,
+            Guid materiaId,
+            List<Alternativa> alternativas,
+            List<Materia> materias
+            ) : this()
         {
             Id = id;
             Enunciado = enunciado;
-            Correta = correta;
-            
-        }
-    }
+            MateriaId = materiaId;
 
-    public class ExcluirQuestaoViewModel 
+            AlternativasSelecionadas = alternativas
+             .Select(a => new AlternativaQuestaoViewModel(a.Letra, a.Resposta, a.Correta))
+             .ToList();
+
+            MateriasDisponiveis = materias
+                .Select(d => new SelectListItem(d.Nome, d.Id.ToString()))
+                .ToList();
+
+        }
+
+    public static Questao ParaEntidade(EditarQuestaoViewModel viewModel, List<Materia> materias)
+    {
+        Materia? materia = materias.Find(i => i.Id.Equals(viewModel.MateriaId));
+
+        if (materia is null)
+            throw new InvalidOperationException("A matéria requisitada selecionada não foi encontrada.");
+
+        var questao = new Questao(viewModel.Enunciado ?? string.Empty, materia);
+
+        return questao;
+    }
+}
+
+    public class ExcluirQuestaoViewModel
     {
         public Guid Id { get; set; }
         public string Enunciado { get; set; }
@@ -99,31 +136,63 @@ namespace GeradorDeTestes.WebApp.Models
             Registros = new List<DetalhesQuestaoViewModel>();
 
             foreach (var q in questoes)
-                Registros.Add(q.ParaDetalhesVm());
+            {
+                var detalhesVm = DetalhesQuestaoViewModel.ParaDetalhesVm();
+                Registros.Add(detalhesVm);
+            }
         }
     }
 
-    public class DetalhesQuestaoViewModel
+public class DetalhesQuestaoViewModel
+{
+    public Guid Id { get; set; }
+    public string Enunciado { get; set; }
+    public string Materia { get; set; }
+    public string UtilizadaEmTeste { get; set; }
+    public string RespostaCorreta { get; set; }
+    public List<AlternativaQuestaoViewModel> Alternativas { get; set; }
+
+    public DetalhesQuestaoViewModel(
+        Guid id,
+        string enunciado,
+        string materia,
+        string utilizadaEmTeste,
+        string respostaCorreta,
+        List<Alternativa> alternativas
+    )
     {
-        public Guid Id { get; set; }
-        public string Enunciado { get; set; }
-        public bool Correta { get; set; }
+        Id = id;
+        Enunciado = enunciado;
+        Materia = materia;
+        UtilizadaEmTeste = utilizadaEmTeste;
+        RespostaCorreta = respostaCorreta;
 
-        public DetalhesQuestaoViewModel(Guid id, string enunciado, bool correta)
-        {
-            Id = id;
-            Enunciado = enunciado;
-            Correta = correta;
-        }
+        Alternativas = alternativas
+            .Select(a => new AlternativaQuestaoViewModel(a.Letra, a.Resposta, a.Correta))
+            .ToList();
     }
 
-    public class AlternativaQuestaoViewModel 
+    public static DetalhesQuestaoViewModel ParaDetalhesVm(Questao questao)
+    {
+        return new DetalhesQuestaoViewModel(
+            questao.Id,
+            questao.Enunciado,
+            questao.Materias.Nome,
+            questao.UtilizadaEmTeste ? "Sim" : "Não",
+            questao.AlternativaCorreta?.Resposta ?? string.Empty,
+            questao.Alternativas
+        );
+    }
+}
+
+
+    public class AlternativaQuestaoViewModel
     {
         public char Letra { get; set; }
         public string Resposta { get; set; } = string.Empty;
         public bool Correta { get; set; }
-        
-        public AlternativaQuestaoViewModel(){}
+
+        public AlternativaQuestaoViewModel() { }
 
         public AlternativaQuestaoViewModel(char letra, string resposta, bool correta)
         {
@@ -133,19 +202,18 @@ namespace GeradorDeTestes.WebApp.Models
         }
     }
 
-    public class AdicionarAlternativaQuestaoViewModel 
+    public class AdicionarAlternativaQuestaoViewModel
     {
         public string Resposta { get; set; } = string.Empty;
         public bool Correta { get; set; }
 
-        public AdicionarAlternativaQuestaoViewModel(){}
+        public AdicionarAlternativaQuestaoViewModel() { }
 
-        public AdicionarAlternativaQuestaoViewModel(string resposta, bool correta)
+        public AdicionarAlternativaQuestaoViewModel(string resposta, bool correta) : this()
         {
-            Resposta= resposta;
+            Resposta = resposta;
             Correta = correta;
         }
     }
 
 
-}

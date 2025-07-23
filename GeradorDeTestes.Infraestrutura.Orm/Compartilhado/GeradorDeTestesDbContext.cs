@@ -8,7 +8,7 @@ namespace GeradorDeTestes.Infraestrutura.Orm.Compartilhado
     {
         public DbSet<Materia> Materias { get; set; }
         public DbSet<Questao> Questoes { get; set; }
-        public DbSet<AlternativaQuestao> Alternativas { get; set; }
+        public DbSet<Alternativa> Alternativas { get; set; }
 
         public GeradorDeTestesDbContext(DbContextOptions options) : base(options) { }
 

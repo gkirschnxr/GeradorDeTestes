@@ -8,21 +8,23 @@ namespace GeradorDeTestes.Infraestrutura.Orm.ModuloQuestoes
     {
         public void Configure(EntityTypeBuilder<Questao> builder)
         {
-            builder.Property(x => x.Id)
-                .ValueGeneratedNever()
+            builder.Property(q => q.Id)
+            .ValueGeneratedNever()
+            .IsRequired();
+
+            builder.Property(q => q.Enunciado)
+                .HasMaxLength(500)
                 .IsRequired();
 
-            builder.Property(x => x.Enunciado)
-                .HasMaxLength(200)
+            builder.Property(q => q.UtilizadaEmTeste)
                 .IsRequired();
 
-            builder.Property(x => x.FoiAcertada)
+            builder.HasOne(q => q.Materias)
+                .WithMany(m => m.Questoes)
                 .IsRequired();
 
             builder.HasMany(q => q.Alternativas)
-                .WithOne(a => a.Questao)
-                .HasForeignKey(a => a.QuestaoId)
-                .HasConstraintName("FK_TBAlternativa_TBQuestao");
+                .WithOne(a => a.Questao);
         }
     }
 }
