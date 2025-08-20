@@ -11,7 +11,7 @@ namespace GeradorDeTestes.Dominio.ModuloQuestoes
         public Materia Materias { get; set; } 
         public bool UtilizadaEmTeste { get; set; }
         public List<Teste> Testes { get; set; }
-        public Alternativa? AlternativaCorreta => Alternativas.Find(a => a.Correta);
+        public Alternativa? AlternativaCorreta => Alternativas?.Find(a => a.Correta);
 
         public Questao()
         {

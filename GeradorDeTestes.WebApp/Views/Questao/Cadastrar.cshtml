@@ -1,10 +1,8 @@
-﻿@using GeradorDeTestes.WebApp.Extensions
-
-@model CadastrarQuestaoViewModel
+﻿@model CadastrarQuestaoViewModel
 
 @{
     Layout = "_Layout";
-    ViewBag.Titulo = "Cadastro de Enunciado";
+    ViewBag.Titulo = "Cadastro de Questão";
 }
 
 <hr />
@@ -12,8 +10,16 @@
     <div class="col-md-8">
         <div class="card rounded-4 border-0">
             <div class="card-body p-md-5">
-                <form asp-action="Cadastrar">
+                <form asp-action="Cadastrar" method="post">
                     <h3>Formulário de Cadastro</h3>
+
+                    @if (ViewData.ModelState["CadastroUnico"]?.Errors.Count > 0)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+                            <strong>Pera lá meu patrão!</strong> @ViewData.ModelState["CadastroUnico"]!.Errors.First().ErrorMessage
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
 
                     <div class="form-group d-grid gap-2 mt-3">
                         <label asp-for="Enunciado" class="control-label fs-5">Enunciado:</label>
@@ -27,12 +33,31 @@
                         <span asp-validation-for="MateriasDisponiveis" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group d-grid gap-2 mt-3">
-                        <label asp-for="Correta" class="control-label fs-5">Correta</label>
-                        <select asp-for="Correta" id="inputSerie" class="form-select"></select>
-                        <span asp-validation-for="Correta" class="text-danger"></span>
-                    </div>
+                    <hr class="my-3" />
 
+                    <h4>Alternativas</h4>
+
+                    <div class="row align-items-end g-3 mt-3">
+                        <div class="col">
+                            <label for="Resposta" class="form-label">Resposta:</label>
+
+                            <div class="d-flex gap-2 align-items-center">
+                                <input type="text" name="Resposta" class="form-control"/>
+
+                                <span class="d-flex gap-2">
+                                    @Html.CheckBox("Correta", false, new {@class="form-check-input"})
+                                    <label for="Correta" class="form-check-label">Correta</label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button class="btn btn-outline-primary w-100"
+                                type="submit"
+                                formaction="/questooes/cadastrar/adicionar-alternativa">
+                                Adicionar
+                        </button>
+                    </div>
 
 
                     <div class="form-group d-flex align-items-center justify-content-end gap-3 mt-5">

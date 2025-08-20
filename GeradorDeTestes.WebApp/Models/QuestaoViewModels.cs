@@ -137,7 +137,7 @@ namespace GeradorDeTestes.WebApp.Models;
 
             foreach (var q in questoes)
             {
-                var detalhesVm = DetalhesQuestaoViewModel.ParaDetalhesVm();
+                var detalhesVm = DetalhesQuestaoViewModel.ParaDetalhesVm(q);
                 Registros.Add(detalhesVm);
             }
         }
@@ -180,7 +180,7 @@ public class DetalhesQuestaoViewModel
             questao.Materias.Nome,
             questao.UtilizadaEmTeste ? "Sim" : "Não",
             questao.AlternativaCorreta?.Resposta ?? string.Empty,
-            questao.Alternativas
+            questao.Alternativas!
         );
     }
 }
